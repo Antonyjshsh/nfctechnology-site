@@ -1,1 +1,550 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
+  <title>NFC Cardápios</title>
+  <meta name="theme-color" content="#111111" />
+  <style>
+    :root{
+      --bg:#0f0f10;
+      --surface:#17181b;
+      --surface-2:#1d1f23;
+      --line:rgba(255,255,255,.08);
+      --text:#ffffff;
+      --muted:#b8bbc3;
+      --soft:#8a8f9a;
+      --primary:#ff2d2d;
+      --primary-2:#ff5a5a;
+      --chip:#2a2d33;
+      --good:#1db954;
+      --shadow:0 16px 32px rgba(0,0,0,.28);
+      --radius:22px;
+      --radius-sm:16px;
+      --max:460px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      min-height:100vh;
+    }
+    img{display:block;max-width:100%}
+    a{text-decoration:none;color:inherit}
+    .app{
+      width:min(100%, var(--max));
+      margin:0 auto;
+      min-height:100vh;
+      background:linear-gradient(180deg,#121214 0%, #101113 100%);
+      position:relative;
+      padding-bottom:110px;
+      box-shadow:0 0 0 1px rgba(255,255,255,.03);
+    }
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:30;
+      padding:14px 16px 10px;
+      backdrop-filter:blur(10px);
+      background:rgba(15,15,16,.92);
+      border-bottom:1px solid rgba(255,255,255,.05);
+    }
+    .search-row{display:flex;gap:10px;align-items:center}
+    .search-pill{
+      flex:1;
+      height:50px;
+      border-radius:999px;
+      padding:0 18px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      background:#1a1b1f;
+      border:1px solid rgba(255,255,255,.08);
+      color:var(--muted);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+    }
+    .search-pill input{
+      all:unset;
+      flex:1;
+      color:var(--text);
+      font-size:15px;
+    }
+    .icon-btn{
+      width:50px;height:50px;border-radius:50%;
+      background:var(--primary);border:none;color:#fff;
+      display:grid;place-items:center;cursor:pointer;
+      box-shadow:0 12px 26px rgba(255,45,45,.28);
+      font-size:18px;font-weight:700;
+    }
+    .share-btn{
+      width:42px;height:42px;border-radius:50%;
+      border:1px solid rgba(255,255,255,.12);
+      background:#1a1b1f;color:#fff;
+      display:grid;place-items:center;cursor:pointer;
+    }
+    .hero{
+      padding:18px 16px 10px;
+      display:flex;gap:14px;align-items:flex-start;
+    }
+    .logo{
+      width:84px;height:84px;border-radius:24px;
+      background:#0c0c0d;display:grid;place-items:center;
+      overflow:hidden;border:1px solid rgba(255,255,255,.08);
+      box-shadow:var(--shadow);
+      flex-shrink:0;
+    }
+    .logo img{width:100%;height:100%;object-fit:cover}
+    .hero-meta{flex:1}
+    .eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#ffc1c1;font-weight:700}
+    .title{font-size:34px;line-height:1.02;margin:4px 0 4px;font-weight:900}
+    .status{
+      display:flex;align-items:center;gap:8px;color:#f9b3b3;font-weight:700;font-size:15px;margin-bottom:12px;
+    }
+    .status.visualizacao{color:#ffffff;font-weight:800}
+    .badges{display:flex;flex-wrap:wrap;gap:8px}
+    .badge{
+      background:var(--chip);border:1px solid rgba(255,255,255,.05);color:#e8e8ea;
+      border-radius:999px;padding:8px 12px;font-size:13px;font-weight:700;
+    }
+    .tabs-wrap{
+      padding:8px 0 0;
+      border-top:1px solid rgba(255,255,255,.05);
+      border-bottom:1px solid rgba(255,255,255,.05);
+      background:rgba(23,24,27,.75);
+      position:sticky;top:74px;z-index:25;
+      backdrop-filter:blur(10px);
+    }
+    .tabs{
+      display:flex;gap:10px;overflow:auto;padding:0 16px 10px;
+      scrollbar-width:none;
+    }
+    .tabs::-webkit-scrollbar{display:none}
+    .tab{
+      padding:11px 14px;border-radius:999px;white-space:nowrap;
+      font-weight:800;font-size:14px;color:var(--muted);background:transparent;
+      border:1px solid transparent;cursor:pointer;
+    }
+    .tab.active{background:rgba(255,45,45,.14);color:#fff;border-color:rgba(255,45,45,.28)}
+    main{padding:18px 16px 0}
+    .section{margin-bottom:28px;scroll-margin-top:148px}
+    .section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+    .section-title{font-size:24px;font-weight:900;display:flex;align-items:center;gap:10px}
+    .star-badge{
+      width:28px;height:28px;border-radius:50%;background:rgba(255,45,45,.18);
+      display:grid;place-items:center;color:var(--primary);font-size:15px;
+      border:1px solid rgba(255,45,45,.32);
+    }
+    .section-link{color:#ddd;font-weight:700;font-size:14px}
+    .highlights{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:12px;
+      overflow:auto;scrollbar-width:none;
+    }
+    .highlights::-webkit-scrollbar{display:none}
+    .highlight-card{
+      background:var(--surface);border:1px solid var(--line);border-radius:20px;overflow:hidden;
+      position:relative;box-shadow:var(--shadow);min-width:0;
+    }
+    .highlight-card img{width:100%;aspect-ratio:1/1.18;object-fit:cover}
+    .rank{
+      position:absolute;top:10px;right:10px;background:var(--primary);color:#fff;
+      width:56px;height:56px;border-radius:50%;display:grid;place-items:center;
+      font-weight:900;font-size:22px;box-shadow:0 8px 18px rgba(255,45,45,.28)
+    }
+    .card-copy{padding:12px}
+    .card-name{font-weight:900;font-size:15px;line-height:1.2;margin-bottom:8px}
+    .price{font-weight:900;font-size:17px}
+    .menu-list{display:flex;flex-direction:column;gap:16px}
+    .menu-item{
+      display:flex;gap:14px;align-items:flex-start;
+      padding-bottom:16px;border-bottom:1px solid var(--line);
+    }
+    .menu-item:last-child{border-bottom:none;padding-bottom:0}
+    .thumb{
+      width:120px;height:110px;border-radius:18px;overflow:hidden;flex-shrink:0;
+      background:#0a0a0b;border:1px solid rgba(255,255,255,.06);
+      box-shadow:var(--shadow)
+    }
+    .thumb img{width:100%;height:100%;object-fit:cover}
+    .item-copy{flex:1;min-width:0}
+    .item-name{font-size:17px;font-weight:900;line-height:1.22;margin-bottom:8px}
+    .item-desc{font-size:14px;color:var(--muted);line-height:1.45;margin-bottom:10px}
+    .item-meta{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+    .rating-chip{
+      display:inline-flex;align-items:center;gap:6px;padding:8px 10px;border-radius:999px;
+      background:#1c1f24;border:1px solid rgba(255,255,255,.06);font-size:12px;font-weight:800;color:#fff;
+    }
+    .rating-chip .small-star{color:#ffce3a}
+    .review-link{
+      display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:800;color:#fff;
+      background:rgba(255,45,45,.14);padding:9px 12px;border-radius:999px;border:1px solid rgba(255,45,45,.24);
+    }
+    .review-panel{
+      margin-top:12px;background:linear-gradient(180deg,#17181b,#141518);
+      border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:14px;display:none;
+    }
+    .review-panel.open{display:block}
+    .stars{display:flex;gap:8px;margin-bottom:12px}
+    .star{
+      width:38px;height:38px;border-radius:12px;border:1px solid rgba(255,255,255,.08);
+      display:grid;place-items:center;cursor:pointer;background:#1c1e22;font-size:18px;color:#5b5f68;
+    }
+    .star.selected{color:#ffcf40;background:#27210f;border-color:rgba(255,207,64,.25)}
+    .review-panel textarea{
+      width:100%;min-height:82px;border-radius:14px;border:1px solid rgba(255,255,255,.08);
+      background:#101114;color:#fff;padding:12px 14px;resize:vertical;font:inherit;
+    }
+    .review-actions{display:flex;gap:10px;margin-top:10px}
+    .btn{
+      appearance:none;border:none;border-radius:14px;padding:12px 14px;font-weight:900;cursor:pointer;
+    }
+    .btn-primary{background:var(--primary);color:#fff;box-shadow:0 12px 24px rgba(255,45,45,.25)}
+    .btn-secondary{background:#21242a;color:#fff;border:1px solid rgba(255,255,255,.06)}
+    .reviews-list{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+    .review-card{
+      background:#121316;border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:12px;
+    }
+    .review-card-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:6px}
+    .review-name{font-weight:800;font-size:14px}
+    .review-text{font-size:13px;line-height:1.45;color:var(--muted)}
+    .cta-card{
+      margin:8px 0 30px;padding:18px;border-radius:24px;border:1px solid rgba(255,255,255,.06);
+      background:linear-gradient(180deg,#18191d,#131417);box-shadow:var(--shadow);
+    }
+    .cta-title{font-size:22px;font-weight:900;margin:0 0 8px}
+    .cta-copy{font-size:14px;color:var(--muted);line-height:1.55;margin-bottom:14px}
+    .cta-whats{
+      display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 18px;border-radius:16px;
+      background:#25d366;color:#091f10;font-weight:900;box-shadow:0 14px 30px rgba(37,211,102,.25);
+    }
+    .bottom-nav{
+      position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:min(100%, var(--max));
+      background:rgba(15,15,16,.97);border-top:1px solid rgba(255,255,255,.07);padding:10px 8px calc(10px + env(safe-area-inset-bottom));
+      display:grid;grid-template-columns:repeat(4,1fr);gap:6px;z-index:40;backdrop-filter:blur(12px);
+    }
+    .nav-item{
+      display:flex;flex-direction:column;align-items:center;gap:6px;color:#9499a4;font-size:12px;font-weight:800;
+      padding:6px 4px;border-radius:14px;
+    }
+    .nav-item.active{color:var(--primary)}
+    .nav-ico{font-size:20px}
+    .empty{padding:14px;border-radius:16px;background:#181a1d;border:1px dashed rgba(255,255,255,.08);color:var(--muted);font-size:14px}
+    .hidden{display:none !important}
+    @media (max-width:380px){
+      .title{font-size:28px}
+      .thumb{width:104px;height:98px}
+      .highlights{grid-template-columns:repeat(2,1fr)}
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="search-row">
+        <label class="search-pill">
+          <span>🔎</span>
+          <input id="searchInput" type="search" placeholder="Buscar pratos, categorias ou bebidas" />
+        </label>
+        <button class="icon-btn" title="Buscar">⌕</button>
+        <button class="share-btn" title="Compartilhar">⤴</button>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="logo"><img src="data:image/jpeg;base64,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" alt="Logo Máfia do Sushi"></div>
+      <div class="hero-meta">
+        <div class="eyebrow">NFC Cardápios</div>
+        <h1 class="title">Máfia do Sushi</h1>
+        <div class="status visualizacao">Apenas visualização</div>
+        <div class="badges">
+          <span class="badge">⭐ Avaliação por prato</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="tabs-wrap">
+      <nav class="tabs" id="categoryTabs"></nav>
+    </div>
+
+    <main>
+      <section class="section" id="destaques-section">
+        <div class="section-head">
+          <div class="section-title"><span class="star-badge">★</span> Destaques</div>
+          <a href="#" class="section-link">Top 5</a>
+        </div>
+        <div class="highlights" id="highlights"></div>
+      </section>
+
+      <div id="menuSections"></div>
+
+      <section class="cta-card" id="contato-nfc">
+        <p class="eyebrow" style="margin:0 0 8px">NFC Technology</p>
+        <h2 class="cta-title">Gostou deste cardápio digital?</h2>
+        <p class="cta-copy">A NFC Technology cria cardápios, links inteligentes e páginas personalizadas para o seu negócio. Se você gostou deste modelo e quer o seu, fale comigo no WhatsApp.</p>
+        <a class="cta-whats" href="https://wa.me/5551980539863?text=Ol%C3%A1!%20Gostei%20do%20card%C3%A1pio%20digital%20e%20quero%20fazer%20o%20meu." target="_blank" rel="noopener noreferrer">💬 Chamar no WhatsApp</a>
+      </section>
+    </main>
+  </div>
+
+  <nav class="bottom-nav">
+    <a class="nav-item active" href="#destaques-section"><span class="nav-ico">🍽️</span><span>Cardápio</span></a>
+    <a class="nav-item" href="#contato-nfc"><span class="nav-ico">⭐</span><span>Avaliar</span></a>
+    <a class="nav-item" href="#categoryTabs"><span class="nav-ico">📋</span><span>Categorias</span></a>
+    <a class="nav-item" href="#contato-nfc"><span class="nav-ico">👤</span><span>Contato</span></a>
+  </nav>
+
+  <script>
+    const data = {
+      highlights: [
+        { rank: 1, name: 'Hot Tradicional 10 peças', price: 'R$ 22,99', image: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=800&q=80' },
+        { rank: 2, name: 'Temaki Filadélfia', price: 'R$ 25,99', image: 'https://images.unsplash.com/photo-1611143669185-af224c5e3252?auto=format&fit=crop&w=800&q=80' },
+        { rank: 3, name: 'Combo Família', price: 'R$ 89,99', image: 'https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&w=800&q=80' },
+        { rank: 4, name: 'Burguer Duplo Cheddar', price: 'R$ 37,99', image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=800&q=80' },
+        { rank: 5, name: 'Coca-Cola 2L', price: 'R$ 15,00', image: 'https://images.unsplash.com/photo-1629203851122-3726ecdf080e?auto=format&fit=crop&w=800&q=80' }
+      ],
+      categories: [
+        {
+          slug: 'entradas',
+          name: 'Entradas / Petiscos',
+          items: [
+            {
+              id: 'ceviche',
+              name: 'Ceviche Máfia (200g)',
+              desc: 'Delicioso e refrescante, nossa versão desse prato da culinária peruana é servida com cubos de peixe temperados e toque cítrico.',
+              price: 'R$ 39,99',
+              image: 'https://images.unsplash.com/photo-1559847844-5315695dadae?auto=format&fit=crop&w=900&q=80',
+              rating: 4.8,
+              total: 37,
+              reviews: [
+                { name: 'Paula', stars: 5, text: 'Muito fresco e bem servido.' },
+                { name: 'André', stars: 4, text: 'Gostei bastante, bem equilibrado.' }
+              ]
+            },
+            {
+              id: 'camarao-grego',
+              name: 'Camarão Grego 5 peças + Molho Rosé',
+              desc: 'Crocante e delicioso, feito com camarão grande recheado com catupiry cremoso e empanado na medida certa.',
+              price: 'R$ 44,99',
+              image: 'https://images.unsplash.com/photo-1565299585323-38174c4a6471?auto=format&fit=crop&w=900&q=80',
+              rating: 4.9,
+              total: 52,
+              reviews: [
+                { name: 'Julia', stars: 5, text: 'Molho rosé combina muito bem!' }
+              ]
+            },
+            {
+              id: 'tilapia',
+              name: 'Tiras de Tilápia Empanada (300g)',
+              desc: 'Tiras de tilápia empanada na panko, sequinhas e crocantes, acompanhadas de limão.',
+              price: 'R$ 49,99',
+              image: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=900&q=80',
+              rating: 4.7,
+              total: 29,
+              reviews: []
+            }
+          ]
+        },
+        {
+          slug: 'sushi',
+          name: 'Sushi / Combos',
+          items: [
+            {
+              id: 'combo-familia',
+              name: 'Combo Família',
+              desc: 'Seleção especial com peças variadas para dividir. Ideal para 3 a 4 pessoas.',
+              price: 'R$ 89,99',
+              image: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=900&q=80',
+              rating: 4.9,
+              total: 81,
+              reviews: [
+                { name: 'Bruna', stars: 5, text: 'Combo top, vale muito a pena.' }
+              ]
+            },
+            {
+              id: 'hot-tradicional',
+              name: 'Hot Tradicional 10 peças',
+              desc: 'Quentinho por fora, macio por dentro, com recheio clássico e acabamento crocante.',
+              price: 'R$ 22,99',
+              image: 'https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&w=900&q=80',
+              rating: 4.6,
+              total: 44,
+              reviews: []
+            },
+            {
+              id: 'temaki',
+              name: 'Temaki Filadélfia',
+              desc: 'Temaki com salmão em cubos, cream cheese e cebolinha, montado na hora.',
+              price: 'R$ 25,99',
+              image: 'https://images.unsplash.com/photo-1611143669185-af224c5e3252?auto=format&fit=crop&w=900&q=80',
+              rating: 4.8,
+              total: 63,
+              reviews: []
+            }
+          ]
+        },
+        {
+          slug: 'burgers',
+          name: 'Burgers',
+          items: [
+            {
+              id: 'duplo-cheddar',
+              name: 'Burguer Duplo Cheddar',
+              desc: 'Dois hambúrgueres artesanais, cheddar cremoso, bacon crocante, cebola roxa e molho da casa.',
+              price: 'R$ 37,99',
+              image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=80',
+              rating: 4.9,
+              total: 25,
+              reviews: [
+                { name: 'Pedro', stars: 5, text: 'Muito bom, pão macio e carne no ponto.' }
+              ]
+            }
+          ]
+        },
+        {
+          slug: 'bebidas',
+          name: 'Bebidas',
+          items: [
+            {
+              id: 'coca2l',
+              name: 'Coca-Cola 2L',
+              desc: 'Refrigerante gelado para acompanhar o pedido.',
+              price: 'R$ 15,00',
+              image: 'https://images.unsplash.com/photo-1629203851122-3726ecdf080e?auto=format&fit=crop&w=900&q=80',
+              rating: 4.5,
+              total: 18,
+              reviews: []
+            }
+          ]
+        }
+      ]
+    };
+
+    const formatStars = (n) => '★'.repeat(n) + '☆'.repeat(5-n);
+    const tabsEl = document.getElementById('categoryTabs');
+    const sectionsEl = document.getElementById('menuSections');
+    const highlightsEl = document.getElementById('highlights');
+    const searchInput = document.getElementById('searchInput');
+
+    function renderHighlights(){
+      highlightsEl.innerHTML = data.highlights.map(item => `
+        <article class="highlight-card">
+          <img src="${item.image}" alt="${item.name}">
+          <div class="rank">#${item.rank}</div>
+          <div class="card-copy">
+            <div class="card-name">${item.name}</div>
+            <div class="price">${item.price}</div>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    function renderTabs(){
+      tabsEl.innerHTML = data.categories.map((cat, i) => `
+        <a class="tab ${i===0?'active':''}" href="#${cat.slug}">${cat.name}</a>
+      `).join('');
+    }
+
+    function itemTemplate(item){
+      return `
+      <article class="menu-item" data-name="${(item.name + ' ' + item.desc).toLowerCase()}">
+        <div class="thumb"><img src="${item.image}" alt="${item.name}" loading="lazy"></div>
+        <div class="item-copy">
+          <div class="item-name">${item.name}</div>
+          <div class="item-desc">${item.desc}</div>
+          <div class="item-meta">
+            <div>
+              <div class="price">${item.price}</div>
+              <div class="rating-chip"><span class="small-star">★</span> ${item.rating.toFixed(1)} • ${item.total} avaliações</div>
+            </div>
+            <button class="review-link" type="button" data-review-toggle="${item.id}">⭐ Avaliar</button>
+          </div>
+          <div class="review-panel" id="review-${item.id}">
+            <div style="font-weight:900;margin-bottom:10px">Avalie este prato</div>
+            <div class="stars" data-stars="${item.id}">
+              ${[1,2,3,4,5].map(n=>`<button type="button" class="star" data-star-value="${n}" data-item-id="${item.id}">★</button>`).join('')}
+            </div>
+            <textarea placeholder="Conte rapidamente o que achou deste prato..."></textarea>
+            <div class="review-actions">
+              <button class="btn btn-primary" type="button" data-submit-review="${item.id}">Enviar avaliação</button>
+              <button class="btn btn-secondary" type="button" data-cancel-review="${item.id}">Cancelar</button>
+            </div>
+            <div class="reviews-list">
+              ${(item.reviews.length ? item.reviews : [{name:'Sistema',stars:5,text:'Ainda sem comentários públicos. Seja o primeiro a avaliar!'}]).map(r => `
+                <div class="review-card">
+                  <div class="review-card-top">
+                    <div class="review-name">${r.name}</div>
+                    <div class="rating-chip" style="padding:6px 8px">${formatStars(r.stars)}</div>
+                  </div>
+                  <div class="review-text">${r.text}</div>
+                </div>`).join('')}
+            </div>
+          </div>
+        </div>
+      </article>`;
+    }
+
+    function renderSections(filter = ''){
+      const q = filter.trim().toLowerCase();
+      sectionsEl.innerHTML = data.categories.map(cat => {
+        const items = cat.items.filter(item => !q || (item.name + ' ' + item.desc + ' ' + cat.name).toLowerCase().includes(q));
+        return `
+          <section class="section" id="${cat.slug}">
+            <div class="section-head">
+              <div class="section-title">${cat.name}</div>
+            </div>
+            ${items.length ? `<div class="menu-list">${items.map(itemTemplate).join('')}</div>` : '<div class="empty">Nenhum item encontrado nesta categoria com esse termo.</div>'}
+          </section>`;
+      }).join('');
+      bindInteractive();
+    }
+
+    function bindInteractive(){
+      document.querySelectorAll('[data-review-toggle]').forEach(btn => {
+        btn.onclick = () => {
+          const panel = document.getElementById(`review-${btn.dataset.reviewToggle}`);
+          panel.classList.toggle('open');
+        };
+      });
+      document.querySelectorAll('[data-cancel-review]').forEach(btn => {
+        btn.onclick = () => document.getElementById(`review-${btn.dataset.cancelReview}`).classList.remove('open');
+      });
+      document.querySelectorAll('[data-star-value]').forEach(btn => {
+        btn.onclick = () => {
+          const id = btn.dataset.itemId;
+          const value = Number(btn.dataset.starValue);
+          document.querySelectorAll(`[data-item-id="${id}"]`).forEach(st => {
+            st.classList.toggle('selected', Number(st.dataset.starValue) <= value);
+          });
+          document.getElementById(`review-${id}`).dataset.selected = value;
+        };
+      });
+      document.querySelectorAll('[data-submit-review]').forEach(btn => {
+        btn.onclick = () => {
+          const panel = document.getElementById(`review-${btn.dataset.submitReview}`);
+          const value = panel.dataset.selected || '5';
+          alert(`Demo: avaliação de ${value} estrelas enviada com sucesso.\n\nNa versão final, isso ficará salvo no Supabase.`);
+          panel.classList.remove('open');
+        };
+      });
+    }
+
+    searchInput.addEventListener('input', e => renderSections(e.target.value));
+
+    document.addEventListener('scroll', () => {
+      const sections = [...document.querySelectorAll('#menuSections .section')];
+      const tabs = [...document.querySelectorAll('.tab')];
+      const pos = window.scrollY + 170;
+      let current = 0;
+      sections.forEach((sec, idx) => { if(sec.offsetTop <= pos) current = idx; });
+      tabs.forEach((t,i)=>t.classList.toggle('active', i===current));
+    });
+
+    renderHighlights();
+    renderTabs();
+    renderSections();
+  </script>
+</body>
+</html>
 
