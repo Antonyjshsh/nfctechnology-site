@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#070707" />
+<meta name="description" content="JR Motos — acesso rápido ao Instagram, WhatsApp e avaliações no Google." />
+<title>JR Motos</title>
+<style>
+:root{--bg:#070707;--card:#0e0e0f;--card2:#151516;--red:#ff1616;--white:#fff;--muted:#b8b8bd;--line:rgba(255,255,255,.11)}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--white);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{min-height:100vh;overflow-x:hidden;background:
+ radial-gradient(55rem 35rem at 110% -10%,rgba(255,20,20,.16),transparent 55%),
+ radial-gradient(40rem 28rem at -15% 75%,rgba(255,20,20,.08),transparent 55%),#070707;}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.22;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:28px 28px;mask-image:linear-gradient(to bottom,black,transparent 78%)}
+.shell{width:min(100%,560px);margin:0 auto;padding:26px 18px 34px;position:relative;z-index:1}
+.topline{height:3px;width:84px;background:var(--red);border-radius:999px;margin:0 auto 24px;box-shadow:0 0 22px rgba(255,22,22,.55)}
+.brand{text-align:center;padding:8px 0 18px}
+.logo-wrap{width:min(88vw,420px);margin:0 auto;filter:drop-shadow(0 16px 40px rgba(0,0,0,.55))}
+.logo-wrap img{display:block;width:100%;height:auto}
+.eyebrow{margin-top:8px;color:#d6d6da;text-transform:uppercase;letter-spacing:.25em;font-size:11px;font-weight:700}
+.title{margin:12px 0 8px;font-size:clamp(26px,6vw,34px);letter-spacing:-.025em}
+.subtitle{margin:0 auto;color:var(--muted);font-size:14px;line-height:1.55;max-width:430px}
+.links{display:grid;gap:12px;margin-top:24px}
+.link{position:relative;display:flex;align-items:center;gap:14px;padding:16px 17px;border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.026));border:1px solid var(--line);color:#fff;text-decoration:none;overflow:hidden;transition:.22s ease;box-shadow:0 12px 32px rgba(0,0,0,.24)}
+.link:before{content:"";position:absolute;inset:-1px auto -1px -45%;width:35%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);transform:skewX(-20deg);transition:.35s ease}
+.link:hover{transform:translateY(-2px);border-color:rgba(255,40,40,.45);box-shadow:0 16px 36px rgba(0,0,0,.36),0 0 0 1px rgba(255,22,22,.05) inset}
+.link:hover:before{left:120%}
+.icon{width:49px;height:49px;flex:0 0 49px;display:grid;place-items:center;border-radius:15px;background:#0a0a0b;border:1px solid rgba(255,255,255,.09)}
+.icon svg{width:25px;height:25px}
+.copy{min-width:0;flex:1}
+.copy strong{display:block;font-size:16px;letter-spacing:.01em}
+.copy span{display:block;margin-top:3px;color:#97979e;font-size:12px}
+.arrow{font-size:22px;color:#8f8f96;transition:.2s ease}
+.link:hover .arrow{transform:translateX(3px);color:#fff}
+.link.google{border-color:rgba(255,22,22,.28)}
+.link.google .icon{box-shadow:inset 0 0 0 1px rgba(255,22,22,.15)}
+.section-label{display:flex;align-items:center;gap:10px;margin:26px 3px 10px;color:#818188;font-size:10px;text-transform:uppercase;letter-spacing:.22em;font-weight:800}
+.section-label:before,.section-label:after{content:"";height:1px;background:rgba(255,255,255,.08);flex:1}
+.footer{text-align:center;margin-top:28px;padding-top:19px;border-top:1px solid rgba(255,255,255,.07)}
+.footer .powered{color:#68686e;font-size:10px;letter-spacing:.12em;text-transform:uppercase}
+.footer .nfc{margin-top:5px;color:#99999f;font-size:11px}
+.badge{display:inline-flex;align-items:center;gap:7px;margin-top:18px;padding:8px 11px;border-radius:999px;background:rgba(255,22,22,.08);border:1px solid rgba(255,22,22,.16);font-size:11px;color:#ddd}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 12px rgba(255,22,22,.7)}
+@media (max-width:390px){.shell{padding-left:14px;padding-right:14px}.link{padding:14px}.logo-wrap{width:92vw}}
+
+  .nfc-cta{
+    margin-top:26px;
+    padding:22px;
+    border:1px solid rgba(255,255,255,.10);
+    border-radius:22px;
+    background:
+      radial-gradient(circle at top right, rgba(255,0,0,.16), transparent 34%),
+      linear-gradient(145deg,#111,#171717);
+    box-shadow:0 18px 60px rgba(0,0,0,.28);
+    text-align:center;
+  }
+  .nfc-cta .mini{
+    display:inline-block;
+    font-size:11px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:#ff3b3b;
+    font-weight:800;
+    margin-bottom:8px;
+  }
+  .nfc-cta h3{
+    margin:0 0 8px;
+    font-size:22px;
+    color:#fff;
+  }
+  .nfc-cta p{
+    margin:0 auto 16px;
+    max-width:520px;
+    color:#bcbcbc;
+    font-size:14px;
+    line-height:1.5;
+  }
+  .nfc-cta .cta-button{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:9px;
+    min-height:48px;
+    padding:0 18px;
+    border-radius:14px;
+    background:#ff1717;
+    color:#fff;
+    font-weight:800;
+    text-decoration:none;
+    box-shadow:0 10px 28px rgba(255,23,23,.22);
+  }
+  .nfc-cta .cta-button:hover{transform:translateY(-1px)}
+  .nfc-cta .cta-contact{
+    display:block;
+    margin-top:10px;
+    font-size:12px;
+    color:#8f8f8f;
+  }
+
+</style>
+</head>
+<body>
+<main class="shell">
+  <div class="topline"></div>
+  <section class="brand">
+    <div class="logo-wrap"><img src="logo.png" alt="Logo JR Motos" /></div>
+    <div class="eyebrow">Conecte-se com a JR Motos</div>
+    <h1 class="title">Tudo em um toque.</h1>
+    <p class="subtitle">Escolha abaixo como você quer falar com a gente ou deixar sua avaliação.</p>
+    <div class="badge"><span class="dot"></span> Acesso rápido pelo NFC</div>
+  </section>
+
+  <div class="section-label">Links rápidos</div>
+  <section class="links" aria-label="Links da JR Motos">
+    <a class="link" href="https://www.instagram.com/jr_motos_osorio/" target="_blank" rel="noopener noreferrer">
+      <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.1"/><circle cx="17.4" cy="6.6" r="1" fill="currentColor" stroke="none"/></svg></div>
+      <div class="copy"><strong>Instagram</strong><span>@jr_motos_osorio</span></div><div class="arrow">›</div>
+    </a>
+
+    <a class="link" href="https://wa.me/5551996922601" target="_blank" rel="noopener noreferrer">
+      <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M20.5 11.7a8.5 8.5 0 0 1-12.6 7.5L3 20.5l1.3-4.7A8.5 8.5 0 1 1 20.5 11.7Z"/><path d="M8.4 7.8c.2-.4.4-.4.7-.4h.5c.2 0 .4.1.5.4l.9 2c.1.3.1.5-.1.7l-.7.9c-.1.2-.2.3-.1.5.7 1.5 1.8 2.6 3.3 3.3.2.1.4 0 .5-.1l.9-1c.2-.2.4-.2.7-.1l2 .9c.3.1.4.3.4.5 0 .3-.1 1.7-1.2 2.2-.8.4-1.8.6-3.9-.3-2.7-1.2-4.7-3.2-5.9-5.9-.9-2-.7-3.1-.3-3.8.4-.7.9-1.1 1.8-1.1Z"/></svg></div>
+      <div class="copy"><strong>WhatsApp</strong><span>Fale direto com a JR Motos</span></div><div class="arrow">›</div>
+    </a>
+
+    <a class="link google" href="https://search.google.com/local/writereview?placeid=ChIJ24knxeVvGJURau9GNRudPvA" target="_blank" rel="noopener noreferrer">
+      <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="#fff" d="M21.6 12.23c0-.71-.06-1.23-.2-1.78H12v3.23h5.52c-.11.8-.71 2-2.04 2.81l-.02.11 2.96 2.29.2.02c1.83-1.69 2.98-4.18 2.98-6.68Z"/><path fill="#fff" opacity=".83" d="M12 22c2.69 0 4.95-.89 6.6-2.42l-3.14-2.42c-.84.56-1.96.95-3.46.95-2.63 0-4.87-1.78-5.67-4.24l-.11.01-3.08 2.38-.04.1C4.74 19.63 8.11 22 12 22Z"/><path fill="#fff" opacity=".68" d="M6.33 13.87A6.1 6.1 0 0 1 6 11.91c0-.68.12-1.34.32-1.96l-.01-.13-3.12-2.42-.1.05A10 10 0 0 0 2 11.91c0 1.6.38 3.12 1.09 4.46l3.24-2.5Z"/><path fill="#fff" opacity=".9" d="M12 5.71c1.87 0 3.13.81 3.85 1.48l2.81-2.74C16.94 2.85 14.69 1.82 12 1.82 8.11 1.82 4.74 4.19 3.1 7.45l3.23 2.5C7.14 7.49 9.37 5.71 12 5.71Z"/></svg></div>
+      <div class="copy"><strong>Avaliar no Google</strong><span>Sua avaliação faz a diferença</span></div><div class="arrow">›</div>
+    </a>
+  </section>
+
+
+  <section class="nfc-cta" aria-label="Contato NFC Technology">
+    <div class="mini">NFC Technology</div>
+    <h3>Gostou desse produto?</h3>
+    <p>Leve praticidade e tecnologia para o seu negócio com displays e cartões NFC personalizados.</p>
+    <a class="cta-button" href="https://wa.me/5551980539863?text=Olá%2C%20vi%20um%20produto%20da%20NFC%20Technology%20e%20quero%20saber%20mais." target="_blank" rel="noopener noreferrer">
+      Quero meu NFC
+    </a>
+    <span class="cta-contact">(51) 98053-9863</span>
+  </section>
+
+  <footer class="footer">
+    <div class="powered">Página digital</div>
+    <div class="nfc">NFC Technology</div>
+  </footer>
+</main>
+</body>
+</html>
