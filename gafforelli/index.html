@@ -22,6 +22,17 @@ main{padding:14px 12px 26px}.panel{display:none}.panel.active{display:block}.sec
 .placeholder-bottle{position:absolute;right:9%;bottom:25%;width:26%;height:56%;z-index:2;border-radius:14px 14px 22px 22px;background:linear-gradient(#3d2b1d,#8c5b2f 22%,#c38746 58%,#2b1b12);box-shadow:0 10px 16px #0008}.placeholder-bottle:before{content:"";position:absolute;top:-15%;left:30%;width:40%;height:22%;background:#1b1b1b;border-radius:6px 6px 2px 2px}.placeholder-bottle span{position:absolute;left:8%;right:8%;top:40%;padding:5px 2px;background:#111;color:#fff;font-size:8px;font-weight:800;text-align:center;border-radius:3px}
 .note{margin:10px 2px 0;color:#999;font-size:11px;line-height:1.35}.footer{border-top:1px solid #222;padding:24px 18px 30px;text-align:center;background:#050505}.footer h3{font-size:16px;margin:0 0 6px}.footer p{font-size:12px;color:#aaa;margin:0 0 14px}.footer a{display:inline-block;border:1px solid #fff;border-radius:999px;padding:10px 16px;font-size:12px;font-weight:700}.dev{margin-top:16px;font-size:10px;color:#6f6f6f}
 @media(min-width:481px){body{background:#111}.app{box-shadow:0 0 40px #000}}
+.img-modal{position:fixed;inset:0;z-index:9999;display:none}
+.img-modal.open{display:block}
+.img-modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.82);backdrop-filter:blur(6px)}
+.img-modal-card{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(92vw,430px);background:#111;border:1px solid #2e2e2e;border-radius:22px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.55)}
+.img-modal-card img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;background:#181818}
+.img-modal-meta{position:absolute;left:14px;right:14px;bottom:14px;display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+.img-modal-meta strong{font-size:17px;line-height:1.1;max-width:70%;text-shadow:0 2px 10px #000}
+.img-modal-meta b{font-size:17px;white-space:nowrap;text-shadow:0 2px 10px #000}
+.img-modal-gradient{position:absolute;left:0;right:0;bottom:0;height:44%;background:linear-gradient(transparent,rgba(0,0,0,.92))}
+.img-modal-note{position:absolute;top:12px;right:12px;z-index:2;font-size:10px;font-weight:400;color:rgba(255,255,255,.68);letter-spacing:.2px;text-shadow:0 1px 4px #000}
+.img-modal-close{position:absolute;top:10px;left:10px;z-index:3;width:34px;height:34px;border:none;border-radius:999px;background:rgba(0,0,0,.58);color:#fff;font-size:22px;line-height:1;cursor:pointer}
 </style>
 </head>
 <body>
@@ -58,6 +69,19 @@ main{padding:14px 12px 26px}.panel{display:none}.panel.active{display:block}.sec
 <section class="panel" id="wines"><div class="section-head"><h2>🍷 Vinhos</h2><span>3 rótulos</span></div><div class="grid" id="wineGrid"></div><p class="note">Imagens ilustrativas.</p></section>
 </main>
 <footer class="footer"><h3>Gostou deste cardápio?</h3><p>Solicite o seu com a NFC Technology.</p><a href="https://wa.me/5551980539863">(51) 98053-9863</a><div class="dev">Desenvolvido por NFC Technology</div></footer>
+</div>
+<div class="img-modal" id="imgModal" aria-hidden="true">
+  <div class="img-modal-backdrop"></div>
+  <div class="img-modal-card">
+    <button class="img-modal-close" type="button" aria-label="Fechar">×</button>
+    <div class="img-modal-note">Imagem ilustrativa</div>
+    <img id="imgModalPhoto" src="" alt="">
+    <div class="img-modal-gradient"></div>
+    <div class="img-modal-meta">
+      <strong id="imgModalName"></strong>
+      <b id="imgModalPrice"></b>
+    </div>
+  </div>
 </div>
 <script>
 const kits=[
@@ -101,8 +125,47 @@ function render(id,data){document.getElementById(id).innerHTML=data.map(photoCar
 render('kitGrid',kits);render('drinkGrid',drinks);render('wineGrid',wines);render('caipaGrid',caipas);
 const tabs=[...document.querySelectorAll('.tab')],panels=[...document.querySelectorAll('.panel')];
 tabs.forEach(btn=>btn.addEventListener('click',()=>{tabs.forEach(x=>x.classList.remove('active'));btn.classList.add('active');panels.forEach(p=>p.classList.toggle('active',p.id===btn.dataset.panel));window.scrollTo({top:document.querySelector('.tabs-wrap').offsetTop,behavior:'smooth'});}));
+
+const imgModal=document.getElementById('imgModal');
+const imgModalPhoto=document.getElementById('imgModalPhoto');
+const imgModalName=document.getElementById('imgModalName');
+const imgModalPrice=document.getElementById('imgModalPrice');
+
+document.addEventListener('click',function(e){
+  const closeBtn=e.target.closest('.img-modal-close');
+  const backdrop=e.target.closest('.img-modal-backdrop');
+
+  if(closeBtn || backdrop){
+    imgModal.classList.remove('open');
+    imgModal.setAttribute('aria-hidden','true');
+    return;
+  }
+
+  const card=e.target.closest('.card');
+  if(card && !e.target.closest('.tabs') && !e.target.closest('.img-modal-card')){
+    const img=card.querySelector('img.main-img');
+    const name=card.querySelector('.meta strong');
+    const price=card.querySelector('.meta b');
+    if(img && name && price){
+      imgModalPhoto.src=img.src;
+      imgModalPhoto.alt=img.alt || name.textContent;
+      imgModalName.textContent=name.textContent;
+      imgModalPrice.textContent=price.textContent;
+      imgModal.classList.add('open');
+      imgModal.setAttribute('aria-hidden','false');
+    }
+  }
+});
+
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){
+    imgModal.classList.remove('open');
+    imgModal.setAttribute('aria-hidden','true');
+  }
+});
 </script>
 </body></html>
+
 
 
 
