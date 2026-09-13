@@ -93,7 +93,7 @@ const caipas=[
   ['Chocolate branco','R$ 38,00','assets/caipa-choc-branco.webp'],
   ['Chocolate preto','R$ 38,00','assets/caipa-choc-preto.webp'],
   ['Pistache','R$ 45,00','assets/caipa-pistache.webp'],
-  ['Nutella','R$ 45,00','assets/caipa-nutella.webp'],
+  ['Nutella','R$ 45,00','assets/caipa-nutella-nova.png'],
   ['Paçoca','R$ 35,00','assets/caipa-pacoca.webp']
 ];
 function photoCard([name,price,img,mode]){return `<article class="card ${mode==='contain'?'contain-card':''}"><img class="main-img" loading="lazy" src="${img}" alt="${name}"><div class="meta"><strong>${name}</strong><b>${price}</b></div></article>`}
@@ -103,6 +103,7 @@ const tabs=[...document.querySelectorAll('.tab')],panels=[...document.querySelec
 tabs.forEach(btn=>btn.addEventListener('click',()=>{tabs.forEach(x=>x.classList.remove('active'));btn.classList.add('active');panels.forEach(p=>p.classList.toggle('active',p.id===btn.dataset.panel));window.scrollTo({top:document.querySelector('.tabs-wrap').offsetTop,behavior:'smooth'});}));
 </script>
 </body></html>
+
 
 
 
