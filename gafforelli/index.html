@@ -16,7 +16,7 @@ a{color:inherit;text-decoration:none} button{font:inherit}
 .tabs-wrap{position:sticky;top:0;z-index:30;background:rgba(5,5,5,.92);backdrop-filter:blur(10px);border-top:1px solid #171717;border-bottom:1px solid #222}
 .tabs{display:flex;gap:8px;overflow-x:auto;padding:10px 12px;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tab{flex:0 0 auto;border:1px solid #3a3a3a;background:#111;color:#ddd;border-radius:999px;padding:9px 12px;font-size:12px;font-weight:700;white-space:nowrap}.tab.active{border-color:#d0b47d;color:#fff;background:#1b1710}
 main{padding:14px 12px 26px}.panel{display:none}.panel.active{display:block}.section-head{display:flex;align-items:end;justify-content:space-between;margin:2px 2px 12px}.section-head h2{font-size:22px;margin:0}.section-head span{font-size:11px;color:var(--muted)}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.card{position:relative;aspect-ratio:1/1;border-radius:18px;overflow:hidden;background:#171717;border:1px solid #262626}.card>img.main-img{width:100%;height:100%;object-fit:cover;display:block}.contain-card{background:#f4f1e8}.contain-card>img.main-img{object-fit:contain;padding:8px}.card:after{content:"";position:absolute;left:0;right:0;bottom:0;height:52%;background:linear-gradient(transparent,rgba(0,0,0,.88))}.meta{position:absolute;z-index:3;left:10px;right:10px;bottom:10px;display:flex;align-items:flex-end;justify-content:space-between;gap:8px}.meta strong{font-size:13px;line-height:1.05;max-width:72%;text-shadow:0 2px 8px #000}.meta b{font-size:13px;white-space:nowrap;text-shadow:0 2px 8px #000}.feature{grid-column:span 2;aspect-ratio:2/1;border-radius:20px}.feature .meta strong,.feature .meta b{font-size:16px}.badge{position:absolute;z-index:4;top:10px;left:10px;padding:6px 8px;border-radius:999px;background:rgba(0,0,0,.58);border:1px solid rgba(255,255,255,.18);font-size:10px;font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.card{position:relative;aspect-ratio:1/1;border-radius:18px;overflow:hidden;background:#171717;border:1px solid #262626}.card>img.main-img{width:100%;height:100%;object-fit:cover;display:block}.contain-card{background:#f4f1e8}.contain-card>img.main-img{object-fit:contain;padding:8px}.card:after{content:"";position:absolute;left:0;right:0;bottom:0;height:52%;background:linear-gradient(transparent,rgba(0,0,0,.88))}.meta{position:absolute;z-index:3;left:10px;right:10px;bottom:10px;display:flex;align-items:flex-end;justify-content:space-between;gap:8px}.meta strong{font-size:13px;line-height:1.05;max-width:72%;text-shadow:0 2px 8px #000}.meta b{font-size:13px;white-space:nowrap;text-shadow:0 2px 8px #000}.feature{grid-column:span 2;aspect-ratio:2/1;border-radius:20px}.feature .meta strong,.feature .meta b{font-size:16px}.baldao-feature{aspect-ratio:auto}.baldao-feature>img.main-img{width:100%;height:auto;object-fit:contain}.badge{position:absolute;z-index:4;top:10px;left:10px;padding:6px 8px;border-radius:999px;background:rgba(0,0,0,.58);border:1px solid rgba(255,255,255,.18);font-size:10px;font-weight:700}
 .card:before{content:'Imagem ilustrativa';position:absolute;z-index:5;top:8px;right:8px;font-size:8px;font-weight:400;color:rgba(255,255,255,.58);letter-spacing:.2px;text-shadow:0 1px 4px #000;pointer-events:none}
 .kit-card{background:radial-gradient(circle at 72% 28%,#3c2b12 0,#17120b 28%,#0b0b0b 70%)}.kit-card .bar-bg{position:absolute;inset:0;background:url('assets/foto01.jpg') center/cover;filter:blur(7px) brightness(.33) saturate(.8);transform:scale(1.08)}.kit-card .baly{position:absolute;z-index:1;width:29%;height:64%;object-fit:contain;left:8%;bottom:24%;filter:brightness(.88) saturate(.9);mix-blend-mode:screen;opacity:.9}.kit-card .bottle{position:absolute;z-index:2;width:31%;height:68%;object-fit:contain;right:7%;bottom:23%;filter:drop-shadow(0 8px 12px rgba(0,0,0,.6))}.kit-card .cup{position:absolute;z-index:3;width:43%;height:72%;object-fit:contain;left:31%;bottom:8%;filter:drop-shadow(0 9px 12px rgba(0,0,0,.7))}.kit-card:after{height:48%}
 .placeholder-bottle{position:absolute;right:9%;bottom:25%;width:26%;height:56%;z-index:2;border-radius:14px 14px 22px 22px;background:linear-gradient(#3d2b1d,#8c5b2f 22%,#c38746 58%,#2b1b12);box-shadow:0 10px 16px #0008}.placeholder-bottle:before{content:"";position:absolute;top:-15%;left:30%;width:40%;height:22%;background:#1b1b1b;border-radius:6px 6px 2px 2px}.placeholder-bottle span{position:absolute;left:8%;right:8%;top:40%;padding:5px 2px;background:#111;color:#fff;font-size:8px;font-weight:800;text-align:center;border-radius:3px}
@@ -56,11 +56,16 @@ main{padding:14px 12px 26px}.panel{display:none}.panel.active{display:block}.sec
 </nav>
 <main>
 <section class="panel active" id="highlights">
-  <div class="section-head"><h2>⭐ Destaques</h2><span>Escolha uma categoria acima</span></div>
+  <div class="section-head"><h2>⭐ Destaque</h2><span>Especial da casa</span></div>
   <div class="grid">
-    <article class="card feature"><img class="main-img" src="assets/caipa-morango.webp" alt="Caipirinha Gourmet"><span class="badge">Especialidade da casa</span><div class="meta"><strong>Caipirinha Gourmet</strong><b>a partir de R$ 35</b></div></article>
-    <article class="card"><img class="main-img" src="assets/drink-licor43-sprite.webp" alt="Drink 500ml"><div class="meta"><strong>Drinks 500ml</strong><b>a partir de R$ 25</b></div></article>
-    <article class="card"><img class="main-img" src="assets/kit-red-label.webp" alt="Copão de Kit"><div class="meta"><strong>Copão de Kit</strong><b>a partir de R$ 15</b></div></article>
+    <article class="card feature baldao-feature">
+      <img class="main-img" src="assets/baldao-kit.png" alt="Baldão de Kit">
+      <span class="badge">Destaque</span>
+      <div class="meta">
+        <strong>Baldão de Kit</strong>
+        <b>R$ 30 a R$ 80</b>
+      </div>
+    </article>
   </div>
 </section>
 <section class="panel" id="kits"><div class="section-head"><h2>🥃 Copão de Kit</h2><span>2 por linha</span></div><div class="grid" id="kitGrid"></div><p class="note">Imagens ilustrativas. Cada foto representa o kit completo do produto.</p></section>
@@ -165,6 +170,7 @@ document.addEventListener('keydown',function(e){
 });
 </script>
 </body></html>
+
 
 
 
