@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
@@ -54,7 +54,7 @@ main{padding:14px 12px 26px}.panel{display:none}.panel.active{display:block}.sec
 <section class="panel" id="kits"><div class="section-head"><h2>🥃 Copão de Kit</h2><span>2 por linha</span></div><div class="grid" id="kitGrid"></div><p class="note">Imagens ilustrativas. Cada foto representa o kit completo do produto.</p></section>
 <section class="panel" id="caipas"><div class="section-head"><h2>🍨 Caipirinha Gourmet</h2><span>feito com sorvete</span></div><div class="grid" id="caipaGrid"></div><p class="note">Adicional picolé: R$ 4,00. Imagens ilustrativas.</p></section>
 <section class="panel" id="drinks"><div class="section-head"><h2>🍹 Drinks 500ml</h2><span>5 opções</span></div><div class="grid" id="drinkGrid"></div><p class="note">Imagens ilustrativas.</p></section>
-<section class="panel" id="wines"><div class="section-head"><h2>🍷 Vinhos</h2><span>4 rótulos</span></div><div class="grid" id="wineGrid"></div><p class="note">Imagens ilustrativas.</p></section>
+<section class="panel" id="wines"><div class="section-head"><h2>🍷 Vinhos</h2><span>3 rótulos</span></div><div class="grid" id="wineGrid"></div><p class="note">Imagens ilustrativas.</p></section>
 </main>
 <footer class="footer"><h3>Gostou deste cardápio?</h3><p>Solicite o seu com a NFC Technology.</p><a href="https://wa.me/5551980539863">(51) 98053-9863</a><div class="dev">Desenvolvido por NFC Technology</div></footer>
 </div>
@@ -83,7 +83,6 @@ const drinks=[
 const wines=[
   ['Sangue de Boi','R$ 20,00','assets/wine-sangue.webp'],
   ['Canção','R$ 22,00','assets/wine-cancao.webp'],
-  ['Vô Fiorindo 1,45L','R$ 15,00','assets/wine-vo-fiorindo.webp','contain'],
   ['Pérgola','R$ 30,00','assets/wine-pergola.webp']
 ];
 const caipas=[
@@ -103,3 +102,4 @@ const tabs=[...document.querySelectorAll('.tab')],panels=[...document.querySelec
 tabs.forEach(btn=>btn.addEventListener('click',()=>{tabs.forEach(x=>x.classList.remove('active'));btn.classList.add('active');panels.forEach(p=>p.classList.toggle('active',p.id===btn.dataset.panel));window.scrollTo({top:document.querySelector('.tabs-wrap').offsetTop,behavior:'smooth'});}));
 </script>
 </body></html>
+
