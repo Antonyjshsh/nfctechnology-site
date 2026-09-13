@@ -76,7 +76,7 @@ const kits=[
 ];
 const drinks=[
   ['Licor 43','R$ 38,00','assets/drink-licor43-sprite.webp'],
-  ['Licor 43 + Red Bull','R$ 50,00','assets/drink-licor43-redbull.webp'],
+  ['Licor 43 + Red Bull','R$ 50,00','assets/drink-licor43-redbull.png'],
   ['Aperol','R$ 25,00','assets/drink-aperol.webp'],
   ['Campari','R$ 25,00','assets/drink-campari.webp'],
   ['Beefeater','R$ 35,00','assets/drink-beefeater-ballena.webp']
@@ -103,5 +103,6 @@ const tabs=[...document.querySelectorAll('.tab')],panels=[...document.querySelec
 tabs.forEach(btn=>btn.addEventListener('click',()=>{tabs.forEach(x=>x.classList.remove('active'));btn.classList.add('active');panels.forEach(p=>p.classList.toggle('active',p.id===btn.dataset.panel));window.scrollTo({top:document.querySelector('.tabs-wrap').offsetTop,behavior:'smooth'});}));
 </script>
 </body></html>
+
 
 
