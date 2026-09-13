@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Gafforelli Conveniência</title>
+<style>
+:root{--bg:#080808;--panel:#111;--line:#2a2a2a;--text:#fff;--muted:#aaa;--gold:#a98645}
+*{box-sizing:border-box} html{background:#000} body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif;min-height:100vh}
+a{color:inherit;text-decoration:none} button{font:inherit}
+.app{max-width:480px;margin:0 auto;min-height:100vh;background:#080808}
+.hero{position:relative;padding:22px 18px 18px;overflow:hidden;background:linear-gradient(180deg,rgba(0,0,0,.22),#090909 88%),url('assets/foto01.jpg') center 36%/cover no-repeat}
+.hero:before{content:"";position:absolute;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(2px)}
+.hero>*{position:relative}.logo{width:122px;height:102px;object-fit:contain;display:block;margin:0 auto 8px;filter:drop-shadow(0 6px 16px #000)}
+.brand{text-align:center}.brand h1{font-size:20px;margin:0 0 5px;letter-spacing:.2px}.brand p{font-size:12px;color:#ddd;margin:0}.brand .insta{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:7px 11px;border:1px solid rgba(255,255,255,.22);border-radius:999px;font-size:12px;background:rgba(0,0,0,.35)}
+.tabs-wrap{position:sticky;top:0;z-index:30;background:rgba(5,5,5,.92);backdrop-filter:blur(10px);border-top:1px solid #171717;border-bottom:1px solid #222}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:10px 12px;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tab{flex:0 0 auto;border:1px solid #3a3a3a;background:#111;color:#ddd;border-radius:999px;padding:9px 12px;font-size:12px;font-weight:700;white-space:nowrap}.tab.active{border-color:#d0b47d;color:#fff;background:#1b1710}
+main{padding:14px 12px 26px}.panel{display:none}.panel.active{display:block}.section-head{display:flex;align-items:end;justify-content:space-between;margin:2px 2px 12px}.section-head h2{font-size:22px;margin:0}.section-head span{font-size:11px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.card{position:relative;aspect-ratio:1/1;border-radius:18px;overflow:hidden;background:#171717;border:1px solid #262626}.card>img.main-img{width:100%;height:100%;object-fit:cover;display:block}.contain-card{background:#f4f1e8}.contain-card>img.main-img{object-fit:contain;padding:8px}.card:after{content:"";position:absolute;left:0;right:0;bottom:0;height:52%;background:linear-gradient(transparent,rgba(0,0,0,.88))}.meta{position:absolute;z-index:3;left:10px;right:10px;bottom:10px;display:flex;align-items:flex-end;justify-content:space-between;gap:8px}.meta strong{font-size:13px;line-height:1.05;max-width:72%;text-shadow:0 2px 8px #000}.meta b{font-size:13px;white-space:nowrap;text-shadow:0 2px 8px #000}.feature{grid-column:span 2;aspect-ratio:2/1;border-radius:20px}.feature .meta strong,.feature .meta b{font-size:16px}.badge{position:absolute;z-index:4;top:10px;left:10px;padding:6px 8px;border-radius:999px;background:rgba(0,0,0,.58);border:1px solid rgba(255,255,255,.18);font-size:10px;font-weight:700}
+.kit-card{background:radial-gradient(circle at 72% 28%,#3c2b12 0,#17120b 28%,#0b0b0b 70%)}.kit-card .bar-bg{position:absolute;inset:0;background:url('assets/foto01.jpg') center/cover;filter:blur(7px) brightness(.33) saturate(.8);transform:scale(1.08)}.kit-card .baly{position:absolute;z-index:1;width:29%;height:64%;object-fit:contain;left:8%;bottom:24%;filter:brightness(.88) saturate(.9);mix-blend-mode:screen;opacity:.9}.kit-card .bottle{position:absolute;z-index:2;width:31%;height:68%;object-fit:contain;right:7%;bottom:23%;filter:drop-shadow(0 8px 12px rgba(0,0,0,.6))}.kit-card .cup{position:absolute;z-index:3;width:43%;height:72%;object-fit:contain;left:31%;bottom:8%;filter:drop-shadow(0 9px 12px rgba(0,0,0,.7))}.kit-card:after{height:48%}
+.placeholder-bottle{position:absolute;right:9%;bottom:25%;width:26%;height:56%;z-index:2;border-radius:14px 14px 22px 22px;background:linear-gradient(#3d2b1d,#8c5b2f 22%,#c38746 58%,#2b1b12);box-shadow:0 10px 16px #0008}.placeholder-bottle:before{content:"";position:absolute;top:-15%;left:30%;width:40%;height:22%;background:#1b1b1b;border-radius:6px 6px 2px 2px}.placeholder-bottle span{position:absolute;left:8%;right:8%;top:40%;padding:5px 2px;background:#111;color:#fff;font-size:8px;font-weight:800;text-align:center;border-radius:3px}
+.note{margin:10px 2px 0;color:#999;font-size:11px;line-height:1.35}.footer{border-top:1px solid #222;padding:24px 18px 30px;text-align:center;background:#050505}.footer h3{font-size:16px;margin:0 0 6px}.footer p{font-size:12px;color:#aaa;margin:0 0 14px}.footer a{display:inline-block;border:1px solid #fff;border-radius:999px;padding:10px 16px;font-size:12px;font-weight:700}.dev{margin-top:16px;font-size:10px;color:#6f6f6f}
+@media(min-width:481px){body{background:#111}.app{box-shadow:0 0 40px #000}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="hero" id="top">
+  <img class="logo" src="assets/logo.png" alt="Gafforelli Conveniência">
+  <div class="brand">
+    <h1>Gafforelli Conveniência</h1>
+    <p>Bebidas, bons momentos e especialidades da casa.</p>
+    <a class="insta" href="https://www.instagram.com/convenienciagafforellioficial" target="_blank" rel="noopener">◎ @convenienciagafforellioficial</a>
+  </div>
+</header>
+<nav class="tabs-wrap" aria-label="Categorias">
+  <div class="tabs">
+    <button class="tab active" data-panel="highlights">⭐ Destaques</button>
+    <button class="tab" data-panel="kits">🥃 Copão de Kit</button>
+    <button class="tab" data-panel="caipas">🍨 Caipirinha Gourmet</button>
+    <button class="tab" data-panel="drinks">🍹 Drinks 500ml</button>
+    <button class="tab" data-panel="wines">🍷 Vinhos</button>
+  </div>
+</nav>
+<main>
+<section class="panel active" id="highlights">
+  <div class="section-head"><h2>⭐ Destaques</h2><span>Escolha uma categoria acima</span></div>
+  <div class="grid">
+    <article class="card feature"><img class="main-img" src="assets/caipa-morango.webp" alt="Caipirinha Gourmet"><span class="badge">Especialidade da casa</span><div class="meta"><strong>Caipirinha Gourmet</strong><b>a partir de R$ 35</b></div></article>
+    <article class="card"><img class="main-img" src="assets/drink-licor43-sprite.webp" alt="Drink 500ml"><div class="meta"><strong>Drinks 500ml</strong><b>a partir de R$ 25</b></div></article>
+    <article class="card"><img class="main-img" src="assets/kit-red-label.webp" alt="Copão de Kit"><div class="meta"><strong>Copão de Kit</strong><b>a partir de R$ 15</b></div></article>
+  </div>
+</section>
+<section class="panel" id="kits"><div class="section-head"><h2>🥃 Copão de Kit</h2><span>2 por linha</span></div><div class="grid" id="kitGrid"></div><p class="note">Imagens ilustrativas. Cada foto representa o kit completo do produto.</p></section>
+<section class="panel" id="caipas"><div class="section-head"><h2>🍨 Caipirinha Gourmet</h2><span>feito com sorvete</span></div><div class="grid" id="caipaGrid"></div><p class="note">Adicional picolé: R$ 4,00. Imagens ilustrativas.</p></section>
+<section class="panel" id="drinks"><div class="section-head"><h2>🍹 Drinks 500ml</h2><span>5 opções</span></div><div class="grid" id="drinkGrid"></div><p class="note">Imagens ilustrativas.</p></section>
+<section class="panel" id="wines"><div class="section-head"><h2>🍷 Vinhos</h2><span>4 rótulos</span></div><div class="grid" id="wineGrid"></div><p class="note">Imagens ilustrativas.</p></section>
+</main>
+<footer class="footer"><h3>Gostou deste cardápio?</h3><p>Solicite o seu com a NFC Technology.</p><a href="https://wa.me/5551980539863">(51) 98053-9863</a><div class="dev">Desenvolvido por NFC Technology</div></footer>
+</div>
+<script>
+const kits=[
+  ['Red Label','R$ 25,00','assets/kit-red-label.webp'],
+  ['Passport','R$ 20,00','assets/kit-passport.webp'],
+  ['Passport maçã verde','R$ 22,00','assets/kit-passport-apple.webp'],
+  ['Cavalinho','R$ 20,00','assets/kit-cavalinho.webp'],
+  ["Jack Daniel’s",'R$ 30,00','assets/kit-jack.webp'],
+  ['Beefeater Pink','R$ 28,00','assets/kit-beefeater-pink.webp'],
+  ['Beefeater','R$ 25,00','assets/kit-beefeater.webp'],
+  ['Gin Rocks','R$ 15,00','assets/kit-gin-rocks.webp'],
+  ['Natasha','R$ 15,00','assets/kit-natasha.webp'],
+  ['Intencion','R$ 15,00','assets/kit-intencion.webp'],
+  ['Bob Pinga','R$ 28,00','assets/kit-bob-pinga.webp'],
+  ['Busca Brisa','R$ 25,00','assets/kit-busca-brisa.webp']
+];
+const drinks=[
+  ['Licor 43','R$ 38,00','assets/drink-licor43-sprite.webp'],
+  ['Licor 43 + Red Bull','R$ 50,00','assets/drink-licor43-redbull.webp'],
+  ['Aperol','R$ 25,00','assets/drink-aperol.webp'],
+  ['Campari','R$ 25,00','assets/drink-campari.webp'],
+  ['Beefeater','R$ 35,00','assets/drink-beefeater-ballena.webp']
+];
+const wines=[
+  ['Sangue de Boi','R$ 20,00','assets/wine-sangue.webp'],
+  ['Canção','R$ 22,00','assets/wine-cancao.webp'],
+  ['Vô Fiorindo 1,45L','R$ 15,00','assets/wine-vo-fiorindo.webp','contain'],
+  ['Pérgola','R$ 30,00','assets/wine-pergola.webp']
+];
+const caipas=[
+  ['Morango','R$ 38,00','assets/caipa-morango.webp'],
+  ['Ovomaltine','R$ 40,00','assets/caipa-ovomaltine.webp'],
+  ['Maracujá','R$ 40,00','assets/caipa-maracuja.webp'],
+  ['Chocolate branco','R$ 38,00','assets/caipa-choc-branco.webp'],
+  ['Chocolate preto','R$ 38,00','assets/caipa-choc-preto.webp'],
+  ['Pistache','R$ 45,00','assets/caipa-pistache.webp'],
+  ['Nutella','R$ 45,00','assets/caipa-nutella.webp'],
+  ['Paçoca','R$ 35,00','assets/caipa-pacoca.webp']
+];
+function photoCard([name,price,img,mode]){return `<article class="card ${mode==='contain'?'contain-card':''}"><img class="main-img" loading="lazy" src="${img}" alt="${name}"><div class="meta"><strong>${name}</strong><b>${price}</b></div></article>`}
+function render(id,data){document.getElementById(id).innerHTML=data.map(photoCard).join('')}
+render('kitGrid',kits);render('drinkGrid',drinks);render('wineGrid',wines);render('caipaGrid',caipas);
+const tabs=[...document.querySelectorAll('.tab')],panels=[...document.querySelectorAll('.panel')];
+tabs.forEach(btn=>btn.addEventListener('click',()=>{tabs.forEach(x=>x.classList.remove('active'));btn.classList.add('active');panels.forEach(p=>p.classList.toggle('active',p.id===btn.dataset.panel));window.scrollTo({top:document.querySelector('.tabs-wrap').offsetTop,behavior:'smooth'});}));
+</script>
+</body></html>
