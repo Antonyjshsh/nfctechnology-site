@@ -89,7 +89,7 @@ const wines=[
 const caipas=[
   ['Morango','R$ 38,00','assets/caipa-morango.webp'],
   ['Ovomaltine','R$ 40,00','assets/caipa-ovomaltine.webp'],
-  ['Maracujá','R$ 40,00','assets/caipa-maracuja.webp'],
+  ['Maracujá','R$ 40,00','assets/caipa-maracuja.png'],
   ['Chocolate branco','R$ 38,00','assets/caipa-choc-branco.webp'],
   ['Chocolate preto','R$ 38,00','assets/caipa-choc-preto.webp'],
   ['Pistache','R$ 45,00','assets/caipa-pistache.webp'],
@@ -103,6 +103,7 @@ const tabs=[...document.querySelectorAll('.tab')],panels=[...document.querySelec
 tabs.forEach(btn=>btn.addEventListener('click',()=>{tabs.forEach(x=>x.classList.remove('active'));btn.classList.add('active');panels.forEach(p=>p.classList.toggle('active',p.id===btn.dataset.panel));window.scrollTo({top:document.querySelector('.tabs-wrap').offsetTop,behavior:'smooth'});}));
 </script>
 </body></html>
+
 
 
 
