@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#050505">
+<title>Painel de Gerenciamento | Gafforelli Conveniência</title>
+<style>
+:root{
+  --bg:#060606;
+  --panel:#101012;
+  --panel2:#151517;
+  --line:rgba(255,255,255,.10);
+  --line2:rgba(255,255,255,.16);
+  --text:#fff;
+  --muted:#9b9ba2;
+  --muted2:#6f6f75;
+  --danger:#ff7f7f;
+  --success:#d7ffd7;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{
+  min-height:100vh;
+  overflow-x:hidden;
+  background:
+    radial-gradient(55rem 26rem at 50% -8%,rgba(255,255,255,.07),transparent 58%),
+    #060606;
+}
+button,input{font:inherit}
+button{cursor:pointer}
+.wrap{width:min(100%,640px);margin:0 auto;padding:10px 10px 28px}
+.brand{text-align:center;padding:6px 8px 12px}
+.brand-logo{
+  width:60px;height:60px;object-fit:contain;display:block;margin:0 auto 7px;
+  filter:drop-shadow(0 8px 20px rgba(0,0,0,.35));
+}
+.brand-fallback{
+  width:54px;height:54px;margin:0 auto 7px;border:1px solid var(--line2);
+  border-radius:50%;display:none;place-items:center;font-size:28px;font-family:Georgia,serif
+}
+.brand h1{font-size:19px;line-height:1.08;margin:0 0 3px;letter-spacing:-.025em}
+.brand p{margin:0;color:var(--muted);font-size:10px}
+.panel{
+  background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.022));
+  border:1px solid var(--line);border-radius:16px;padding:12px;
+  box-shadow:0 20px 60px rgba(0,0,0,.28)
+}
+.login{max-width:410px;margin:8px auto}
+label.field-label{
+  display:block;color:#b8b8bd;font-size:9px;font-weight:900;
+  text-transform:uppercase;letter-spacing:.09em;margin:0 0 6px
+}
+input[type=password],input[type=text],input[type=number]{
+  width:100%;height:40px;border:1px solid rgba(255,255,255,.12);
+  border-radius:12px;background:#080809;color:#fff;padding:0 12px;outline:none
+}
+input:focus{border-color:rgba(255,255,255,.32)}
+.btn{border:0;border-radius:11px;font-weight:900;height:38px;padding:0 12px}
+.btn.primary{background:#fff;color:#050505}
+.btn.ghost{background:#151517;color:#fff;border:1px solid var(--line)}
+.btn.soft{background:#1a1a1d;color:#fff;border:1px solid rgba(255,255,255,.08)}
+.btn.full{width:100%}
+.login .btn{margin-top:10px}
+.error{margin-top:10px;color:var(--danger);font-size:11px;line-height:1.4;display:none}
+.hidden{display:none!important}
+
+.topbar{
+  position:sticky;top:0;z-index:50;
+  margin:0 -10px 9px;padding:7px 10px;
+  background:rgba(6,6,6,.88);backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(255,255,255,.05)
+}
+.topbar-row{display:flex;gap:8px;align-items:center}
+.topbar-row + .topbar-row{margin-top:6px}
+.search-wrap{position:relative;flex:1}
+.search-wrap input{padding-left:34px;height:36px}
+.search-icon{
+  position:absolute;left:12px;top:50%;transform:translateY(-50%);
+  color:#6f6f75;font-size:14px;pointer-events:none
+}
+.topbar .btn{height:36px;white-space:nowrap;font-size:9px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.stat{
+  background:#0f0f11;border:1px solid var(--line);border-radius:12px;
+  padding:7px 10px;display:flex;align-items:center;justify-content:space-between;gap:8px
+}
+.stat strong{font-size:16px;line-height:1}
+.stat span{font-size:8px;color:#77777e;text-transform:uppercase;letter-spacing:.08em;font-weight:800}
+
+.categories{display:grid;gap:7px}
+.category{
+  background:#0e0e10;border:1px solid var(--line);
+  border-radius:14px;overflow:hidden
+}
+.category-head{
+  width:100%;border:0;background:transparent;color:#fff;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:8px;padding:10px 12px;text-align:left
+}
+.category-title{min-width:0}
+.category-title strong{display:block;font-size:13px;line-height:1.15}
+.category-title span{display:block;margin-top:2px;font-size:9px;color:#77777e}
+.category-meta{display:flex;align-items:center;gap:8px;flex:0 0 auto}
+.cat-promo{
+  min-width:22px;height:22px;border-radius:999px;padding:0 7px;
+  display:grid;place-items:center;background:#fff;color:#050505;font-size:9px;font-weight:900
+}
+.chevron{
+  width:24px;height:24px;display:grid;place-items:center;color:#8b8b91;
+  transition:transform .2s ease
+}
+.category.open .chevron{transform:rotate(180deg)}
+.category-body{display:none;border-top:1px solid rgba(255,255,255,.06);padding:6px}
+.category.open .category-body{display:block}
+
+.product{
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:11px;background:#0a0a0b;overflow:hidden
+}
+.product + .product{margin-top:5px}
+.product-summary{
+  display:flex;align-items:center;gap:8px;padding:8px 9px
+}
+.product-main{flex:1;min-width:0}
+.product-name{font-size:11px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.product-sub{display:flex;align-items:center;gap:6px;margin-top:3px;flex-wrap:wrap}
+.product-price{font-size:10px;color:#c7c7cb;font-weight:800}
+.product-old{font-size:9px;color:#68686e;text-decoration:line-through}
+.badge{
+  display:inline-flex;align-items:center;height:19px;padding:0 7px;border-radius:999px;
+  font-size:8px;font-weight:900;letter-spacing:.06em;text-transform:uppercase
+}
+.badge.promo{background:#fff;color:#050505}
+.badge.normal{background:#18181b;color:#7f7f86;border:1px solid rgba(255,255,255,.06)}
+.edit-btn{
+  flex:0 0 auto;height:30px;border:1px solid rgba(255,255,255,.10);
+  border-radius:10px;background:#171719;color:#fff;padding:0 11px;
+  font-size:9px;font-weight:900
+}
+.product-editor{
+  display:none;padding:9px;border-top:1px solid rgba(255,255,255,.06);
+  background:#0d0d0f
+}
+.product.editing .product-editor{display:block}
+.editor-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.editor-field small{
+  display:block;color:#727279;font-size:8px;text-transform:uppercase;
+  letter-spacing:.08em;margin-bottom:5px;font-weight:900
+}
+.editor-field input{height:36px}
+.promo-row{
+  display:flex;align-items:center;gap:9px;margin-top:9px;
+  border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:7px 8px;background:#09090a
+}
+.switch{position:relative;width:40px;height:24px;flex:0 0 40px}
+.switch input{opacity:0;width:0;height:0}
+.slider{position:absolute;inset:0;background:#242427;border-radius:99px}
+.slider:before{
+  content:"";position:absolute;width:18px;height:18px;left:3px;top:3px;
+  background:#85858b;border-radius:50%;transition:.18s
+}
+.switch input:checked + .slider{background:#fff}
+.switch input:checked + .slider:before{transform:translateX(16px);background:#050505}
+.promo-copy{min-width:0;flex:1}
+.promo-copy b{display:block;font-size:10px}
+.promo-copy span{display:block;font-size:8px;color:#6f6f75;margin-top:2px}
+.editor-actions{display:grid;grid-template-columns:1fr auto;gap:7px;margin-top:7px}
+.editor-actions .btn{height:34px;font-size:9px}
+.save-btn:disabled{opacity:.55;cursor:wait}
+
+.empty{text-align:center;color:#74747b;font-size:12px;padding:26px 10px}
+.toast{
+  position:fixed;left:50%;bottom:18px;z-index:80;
+  transform:translateX(-50%) translateY(100px);
+  background:#fff;color:#050505;border-radius:999px;padding:10px 15px;
+  font-size:11px;font-weight:900;box-shadow:0 16px 40px rgba(0,0,0,.4);
+  transition:.22s ease
+}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.footer{text-align:center;color:#58585e;font-size:8px;margin-top:14px}
+
+@media(max-width:520px){
+  .wrap{padding-left:8px;padding-right:8px}
+  .brand{padding-top:4px}
+  .brand-logo{width:54px;height:54px}
+  .brand h1{font-size:18px}
+  .topbar{margin-left:-10px;margin-right:-10px;padding-left:10px;padding-right:10px}
+  .topbar-row:first-child{display:grid;grid-template-columns:1fr auto auto}
+  .topbar-row:first-child .search-wrap{min-width:0}
+  .topbar .btn{padding:0 10px;font-size:9px}
+  .category-head{padding:12px}
+  .editor-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="brand">
+    <img class="brand-logo" src="../assets/logo.png" alt="Gafforelli Conveniência"
+         onerror="this.style.display='none';document.getElementById('brandFallback').style.display='grid'">
+    <div id="brandFallback" class="brand-fallback">G</div>
+    <h1>Painel de Gerenciamento</h1>
+    <p>Gerencie preços e promoções de forma rápida</p>
+  </header>
+
+  <section id="loginPanel" class="panel login">
+    <label class="field-label" for="password">Senha de gerenciamento</label>
+    <input id="password" type="password" autocomplete="current-password" placeholder="Digite a senha">
+    <button id="loginBtn" class="btn primary full">Entrar</button>
+    <div id="loginError" class="error"></div>
+  </section>
+
+  <main id="app" class="hidden">
+    <div class="topbar">
+      <div class="topbar-row">
+        <div class="search-wrap">
+          <span class="search-icon">⌕</span>
+          <input id="search" type="text" placeholder="Buscar produto...">
+        </div>
+        <button id="reloadBtn" class="btn ghost">Atualizar</button>
+        <button id="logoutBtn" class="btn ghost">Sair</button>
+      </div>
+      <div class="topbar-row">
+        <div class="stats" style="width:100%">
+          <div class="stat"><span>Produtos</span><strong id="productCount">0</strong></div>
+          <div class="stat"><span>Promoções</span><strong id="promoCount">0</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="categories" class="categories"></div>
+    <div class="footer">NFC Technology • Gerenciamento do cardápio</div>
+  </main>
+</div>
+
+<div id="toast" class="toast">Salvo ✓</div>
+
+<script>
+const EDGE = "https://etgzagkewmsxxerwelmp.supabase.co/functions/v1/gafforelli-admin";
+let password = sessionStorage.getItem("gafforelliAdminPassword") || "";
+let items = [];
+let openCategory = null;
+let editingKey = null;
+
+const categoryLabels = {
+  copao_top:"Copão de Kit — Destaques",
+  copao:"Copão de Kit",
+  caipa:"Caipa Gourmet",
+  drink:"Drinks 500ml",
+  wine:"Vinhos",
+  convenience:"Conveniência"
+};
+const categoryOrder = ["copao_top","copao","caipa","drink","wine","convenience"];
+
+function moneyBR(v){
+  return Number(v || 0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+}
+function esc(s){
+  return String(s ?? "").replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+async function call(action,payload={}){
+  const res = await fetch(EDGE,{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({action,password,...payload})
+  });
+  let data={};
+  try{data=await res.json()}catch{}
+  if(!res.ok) throw new Error(data.error || `Erro ${res.status}`);
+  return data;
+}
+function toast(msg="Salvo ✓"){
+  const el=document.getElementById("toast");
+  el.textContent=msg;
+  el.classList.add("show");
+  clearTimeout(window.__toast);
+  window.__toast=setTimeout(()=>el.classList.remove("show"),1700);
+}
+async function login(){
+  password=document.getElementById("password").value.trim();
+  const err=document.getElementById("loginError");
+  err.style.display="none";
+  try{
+    const data=await call("list");
+    items=data.items || [];
+    sessionStorage.setItem("gafforelliAdminPassword",password);
+    document.getElementById("loginPanel").classList.add("hidden");
+    document.getElementById("app").classList.remove("hidden");
+    render();
+  }catch(e){
+    err.textContent=e.message || "Não foi possível entrar.";
+    err.style.display="block";
+  }
+}
+async function reload(){
+  const data=await call("list");
+  items=data.items || [];
+  render();
+  toast("Dados atualizados");
+}
+
+function render(){
+  const q=document.getElementById("search").value.trim().toLowerCase();
+  document.getElementById("productCount").textContent=items.length;
+  document.getElementById("promoCount").textContent=items.filter(x=>x.promo_active).length;
+
+  const host=document.getElementById("categories");
+  host.innerHTML="";
+
+  let visibleCount=0;
+
+  categoryOrder.forEach(cat=>{
+    const allGroup=items.filter(x=>x.category===cat).sort((a,b)=>a.position-b.position);
+    const group=allGroup.filter(x=>{
+      if(!q) return true;
+      return x.name.toLowerCase().includes(q) || (categoryLabels[cat]||"").toLowerCase().includes(q);
+    });
+    if(!group.length) return;
+    visibleCount += group.length;
+
+    const promoCount=allGroup.filter(x=>x.promo_active).length;
+    const category=document.createElement("section");
+    category.className="category";
+    if(openCategory===cat || q) category.classList.add("open");
+
+    const head=document.createElement("button");
+    head.type="button";
+    head.className="category-head";
+    head.innerHTML=`
+      <div class="category-title">
+        <strong>${esc(categoryLabels[cat]||cat)}</strong>
+        <span>${allGroup.length} ${allGroup.length===1?"produto":"produtos"}</span>
+      </div>
+      <div class="category-meta">
+        ${promoCount ? `<span class="cat-promo">${promoCount}</span>` : ""}
+        <span class="chevron">⌄</span>
+      </div>
+    `;
+    head.addEventListener("click",()=>{
+      openCategory = category.classList.contains("open") ? null : cat;
+      editingKey = null;
+      render();
+    });
+
+    const body=document.createElement("div");
+    body.className="category-body";
+    group.forEach(item=>body.appendChild(productRow(item)));
+
+    category.append(head,body);
+    host.appendChild(category);
+  });
+
+  if(!visibleCount) host.innerHTML='<div class="empty">Nenhum produto encontrado.</div>';
+}
+
+function productRow(item){
+  const el=document.createElement("article");
+  el.className="product";
+  if(editingKey===item.item_key) el.classList.add("editing");
+
+  const summary=document.createElement("div");
+  summary.className="product-summary";
+
+  const promo = item.promo_active && item.promo_price !== null;
+  summary.innerHTML=`
+    <div class="product-main">
+      <div class="product-name">${esc(item.name)}</div>
+      <div class="product-sub">
+        ${promo ? `<span class="product-old">${moneyBR(item.price)}</span><span class="product-price">${moneyBR(item.promo_price)}</span><span class="badge promo">Promoção</span>` :
+                   `<span class="product-price">${moneyBR(item.price)}</span><span class="badge normal">Normal</span>`}
+      </div>
+    </div>
+    <button class="edit-btn" type="button">${editingKey===item.item_key ? "Fechar" : "Editar"}</button>
+  `;
+  summary.querySelector(".edit-btn").addEventListener("click",()=>{
+    editingKey = editingKey===item.item_key ? null : item.item_key;
+    openCategory = item.category;
+    render();
+    if(editingKey){
+      setTimeout(()=>{
+        document.querySelector(`[data-item-key="${CSS.escape(item.item_key)}"]`)?.scrollIntoView({behavior:"smooth",block:"center"});
+      },20);
+    }
+  });
+
+  const editor=document.createElement("div");
+  editor.className="product-editor";
+  editor.dataset.itemKey=item.item_key;
+  editor.innerHTML=`
+    <div class="editor-grid">
+      <div class="editor-field">
+        <small>Preço normal (R$)</small>
+        <input class="normal-price" type="number" min="0" step="0.01" inputmode="decimal" value="${Number(item.price).toFixed(2)}">
+      </div>
+      <div class="editor-field">
+        <small>Preço promocional (R$)</small>
+        <input class="promo-price" type="number" min="0" step="0.01" inputmode="decimal"
+               value="${item.promo_price!==null ? Number(item.promo_price).toFixed(2) : ""}" ${item.promo_active?"":"disabled"}>
+      </div>
+    </div>
+    <div class="promo-row">
+      <label class="switch">
+        <input class="promo-toggle" type="checkbox" ${item.promo_active?"checked":""}>
+        <span class="slider"></span>
+      </label>
+      <div class="promo-copy">
+        <b>Colocar em promoção</b>
+        <span>Ative para aparecer nos destaques do cardápio.</span>
+      </div>
+    </div>
+    <div class="editor-actions">
+      <button class="btn primary save-btn" type="button">Salvar alterações</button>
+      <button class="btn soft cancel-btn" type="button">Cancelar</button>
+    </div>
+  `;
+
+  const toggle=editor.querySelector(".promo-toggle");
+  const promoInput=editor.querySelector(".promo-price");
+  toggle.addEventListener("change",()=>{
+    promoInput.disabled=!toggle.checked;
+    if(toggle.checked) promoInput.focus();
+  });
+  editor.querySelector(".cancel-btn").addEventListener("click",()=>{
+    editingKey=null; render();
+  });
+  editor.querySelector(".save-btn").addEventListener("click",()=>saveItem(editor,item));
+
+  el.append(summary,editor);
+  return el;
+}
+
+async function saveItem(editor,item){
+  const btn=editor.querySelector(".save-btn");
+  const normal=Number(editor.querySelector(".normal-price").value);
+  const active=editor.querySelector(".promo-toggle").checked;
+  const raw=editor.querySelector(".promo-price").value;
+  const promo=raw===""?null:Number(raw);
+
+  if(!Number.isFinite(normal)||normal<0) return toast("Preço normal inválido");
+  if(active && (!Number.isFinite(promo)||promo<0)) return toast("Informe o preço da promoção");
+
+  btn.disabled=true;
+  btn.textContent="Salvando...";
+  try{
+    await call("update_price",{item_key:item.item_key,price:normal});
+    await call("set_promo",{item_key:item.item_key,promo_active:active,promo_price:promo});
+    const data=await call("list");
+    items=data.items || [];
+    editingKey=null;
+    openCategory=item.category;
+    render();
+    toast("Salvo ✓");
+  }catch(e){
+    alert(e.message || "Não foi possível salvar.");
+  }finally{
+    btn.disabled=false;
+    btn.textContent="Salvar alterações";
+  }
+}
+
+document.getElementById("loginBtn").addEventListener("click",login);
+document.getElementById("password").addEventListener("keydown",e=>{if(e.key==="Enter")login()});
+document.getElementById("search").addEventListener("input",render);
+document.getElementById("reloadBtn").addEventListener("click",()=>reload().catch(e=>alert(e.message)));
+document.getElementById("logoutBtn").addEventListener("click",()=>{
+  sessionStorage.removeItem("gafforelliAdminPassword");
+  location.reload();
+});
+
+if(password){
+  document.getElementById("password").value=password;
+  login();
+}
+</script>
+</body>
+</html>
