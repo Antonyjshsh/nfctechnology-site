@@ -1,6 +1,5 @@
 (() => {
-  const API_URL = "https://etgzagkewmsxxerwelmp.supabase.co/rest/v1/gafforelli_menu_items?select=item_key,category,position,name,price,promo_active,promo_price,promoted_at&order=category.asc,position.asc";
-  const API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0Z3phZ2tld21zeHhlcndlbG1wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkxMjM1MzksImV4cCI6MjEwNDY5OTUzOX0.OMK12FcSe8enkbeQb-gh0RbrXXYemgrFCQYetZzRuek";
+  const API_URL = "https://etgzagkewmsxxerwelmp.supabase.co/functions/v1/gafforelli-admin";
 
   const money = (value) => Number(value || 0).toLocaleString("pt-BR", {
     style: "currency",
@@ -235,14 +234,12 @@
   async function refreshManagedMenu() {
     try {
       const res = await fetch(API_URL, {
-        headers: {
-          apikey: API_KEY,
-          Authorization: `Bearer ${API_KEY}`
-        },
+        method: "GET",
         cache: "no-store"
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const rows = await res.json();
+      const payload = await res.json();
+      const rows = Array.isArray(payload) ? payload : payload.items;
       if (Array.isArray(rows)) applyRows(rows);
     } catch (err) {
       console.warn("Gerenciamento do cardápio indisponível; usando preços locais.", err);
