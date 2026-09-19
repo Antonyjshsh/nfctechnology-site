@@ -2,7 +2,7 @@
   "use strict";
 
   const API =
-    "https://etgzagkewmsxxerwelmp.supabase.co/functions/v1/gafforelli-admin";
+  "https://etgzagkewmsxxerwelmp.supabase.co/storage/v1/object/public/gafforelli-menu/menu.json";
 
   const money = v =>
     Number(v || 0).toLocaleString("pt-BR", {
