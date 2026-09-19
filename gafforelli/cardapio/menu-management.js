@@ -1,299 +1,297 @@
 (() => {
   "use strict";
 
-  const API_URL = "https://etgzagkewmsxxerwelmp.supabase.co/functions/v1/gafforelli-admin";
-  const UPDATE_KEY = "gafforelliMenuUpdatedAt";
+  const API =
+    "https://etgzagkewmsxxerwelmp.supabase.co/functions/v1/gafforelli-admin";
 
-  const money = (value) => Number(value || 0).toLocaleString("pt-BR", {
-    style: "currency",
-    currency: "BRL"
-  });
+  const money = v =>
+    Number(v || 0).toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL"
+    });
 
-  const categoryLabels = {
-    copao_top: "Copão de Kit",
-    copao: "Copão de Kit",
-    caipa: "Caipa Gourmet",
-    drink: "Drinks 500ml",
-    wine: "Vinhos",
-    convenience: "Conveniência"
+  const norm = v =>
+    String(v || "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[’']/g, "")
+      .trim()
+      .toLowerCase();
+
+  const containers = {
+    copao_top: "#kitGrid",
+    copao: "#kitGrid",
+    caipa: "#caipaGrid",
+    drink: "#drinkGrid",
+    wine: "#wineGrid"
   };
 
-  const sectionTargets = {
-    copao_top: "copao",
-    copao: "copao",
-    caipa: "caipa",
-    drink: "drinks",
-    wine: "vinhos",
-    convenience: "conveniencia"
+  const aliases = {
+    "licor-43-2": "Licor 43 + Red Bull"
   };
 
-  const groupDefs = {
-    copao_top: { cards: "#topKits .kit-feature", prices: ".kit-label strong" },
-    copao: { cards: "#kitGrid .small-card", prices: ".small-info strong" },
-    caipa: { cards: "#caipaList .product-card", prices: ".product-meta strong" },
-    drink: { cards: "#drinksList .product-card", prices: ".product-meta strong" },
-    wine: { cards: "#winesList .product-card", prices: ".product-meta strong" },
-    convenience: { cards: "#convenienceList .product-card", prices: ".product-meta strong" }
-  };
-
-  function dataForCategory(category) {
-    try {
-      switch (category) {
-        case "copao_top": return typeof topKits !== "undefined" ? topKits : null;
-        case "copao": return typeof kits !== "undefined" ? kits : null;
-        case "caipa": return typeof caipas !== "undefined" ? caipas : null;
-        case "drink": return typeof drinks !== "undefined" ? drinks : null;
-        case "wine": return typeof wines !== "undefined" ? wines : null;
-        case "convenience": return typeof convenience !== "undefined" ? convenience : null;
-        default: return null;
-      }
-    } catch (_) {
-      return null;
-    }
+  function productName(row) {
+    let name = aliases[row.item_key] || row.name || "";
+    return name.replace(/^Vinho\s+/i, "");
   }
 
-  function itemFor(row) {
-    const data = dataForCategory(row.category);
-    return data?.[Number(row.position)] || null;
+  function findCard(row) {
+    const selector = containers[row.category];
+    if (!selector) return null;
+
+    const wanted = norm(productName(row));
+
+    const cards = [
+      ...document.querySelectorAll(`${selector} .card`)
+    ];
+
+    return (
+      cards.find(card => {
+        const name = card.querySelector(".meta strong")?.textContent;
+        return norm(name) === wanted;
+      }) ||
+      cards.find(card => {
+        const name = norm(
+          card.querySelector(".meta strong")?.textContent
+        );
+        return (
+          name &&
+          (name.includes(wanted) || wanted.includes(name))
+        );
+      }) ||
+      null
+    );
   }
 
-  function cardFor(row) {
-    const def = groupDefs[row.category];
-    if (!def) return null;
-    return document.querySelectorAll(def.cards)[Number(row.position)] || null;
-  }
-
-  function sourceFor(row) {
-    const item = itemFor(row);
-    if (item?.image) return item;
-
-    const card = cardFor(row);
-    const img = card?.querySelector(".product-media img, .small-media img.contain-img, .small-media img:first-of-type, .kit-bottle, img");
-    return img ? {
-      image: img.currentSrc || img.src,
-      contain: img.classList.contains("contain-img") || row.category.startsWith("copao")
-    } : null;
-  }
-
-  function ensureStyles() {
+  function styles() {
     if (document.getElementById("gmStyles")) return;
-    const style = document.createElement("style");
-    style.id = "gmStyles";
-    style.textContent = `
-      .gm-price-wrap{display:flex!important;align-items:center;justify-content:flex-end;gap:6px;flex-wrap:wrap}
-      .gm-old-price{font-size:10px!important;color:#8d8d8d!important;text-decoration:line-through;font-weight:600!important}
-      .gm-new-price{font-size:13px!important;color:#fff!important;font-weight:900!important}
-      .gm-card-promo{position:relative}
-      .gm-promo-badge{position:absolute;z-index:8;top:8px;left:8px;padding:5px 8px;border-radius:999px;background:#fff;color:#050505;font-size:9px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;box-shadow:0 5px 18px rgba(0,0,0,.28)}
-      .gm-promos{position:relative;z-index:3;padding:22px 18px 24px;background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.012));border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.07)}
-      .gm-promos-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:13px}
-      .gm-promos-kicker{font-size:9px;letter-spacing:.19em;text-transform:uppercase;color:#a9a9ad;font-weight:800}
-      .gm-promos-title{margin:4px 0 0;font-family:Georgia,"Times New Roman",serif;font-size:24px;line-height:1.05;letter-spacing:-.02em}
-      .gm-promos-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-      .gm-promo-card{position:relative;overflow:hidden;border-radius:18px;background:#121212;border:1px solid rgba(255,255,255,.10);min-width:0;cursor:pointer;box-shadow:0 12px 28px rgba(0,0,0,.16)}
-      .gm-promo-media{height:145px;position:relative;overflow:hidden;background:radial-gradient(circle at 50% 35%,rgba(189,148,87,.14),transparent 48%),linear-gradient(150deg,#1a1a1a,#0b0b0b)}
-      .gm-promo-media img{width:100%;height:100%;object-fit:cover;display:block}
-      .gm-promo-card[data-kit="1"] .gm-promo-media img,.gm-promo-card[data-contain="1"] .gm-promo-media img{object-fit:contain;padding:10px}
-      .gm-promo-tag{position:absolute;z-index:2;top:9px;left:9px;padding:5px 8px;border-radius:999px;background:#fff;color:#050505;font-size:9px;font-weight:900;letter-spacing:.08em}
-      .gm-promo-info{padding:11px 11px 12px}
-      .gm-promo-category{font-size:9px;color:#929297;text-transform:uppercase;letter-spacing:.09em;font-weight:800}
-      .gm-promo-name{font-size:13px;font-weight:800;line-height:1.2;margin:4px 0 8px}
-      .gm-promo-prices{display:flex;align-items:baseline;gap:7px;flex-wrap:wrap}
-      .gm-promo-prices s{font-size:10px;color:#777}
-      .gm-promo-prices strong{font-size:15px;color:#fff}
-      @media(max-width:360px){.gm-promos-grid{grid-template-columns:1fr}.gm-promo-media{height:165px}}
-    `;
-    document.head.appendChild(style);
-  }
 
-  function applyRows(rows) {
-    ensureStyles();
+    const s = document.createElement("style");
+    s.id = "gmStyles";
 
-    rows.forEach((row) => {
-      const def = groupDefs[row.category];
-      if (!def) return;
-
-      const normal = money(row.price);
-      const promo = row.promo_active && row.promo_price !== null ? money(row.promo_price) : null;
-      const item = itemFor(row);
-
-      // Mantém o modal do cardápio usando o mesmo preço que aparece no card.
-      if (item) {
-        item._normalPrice = normal;
-        item._promoPrice = promo;
-        item.price = promo || normal;
+    s.textContent = `
+      .gm-promo-badge{
+        position:absolute;
+        z-index:10;
+        top:10px;
+        left:10px;
+        background:#fff;
+        color:#000;
+        border-radius:999px;
+        padding:6px 9px;
+        font-size:9px;
+        font-weight:900;
+        text-transform:uppercase;
       }
 
-      const card = cardFor(row);
-      if (!card) return;
+      .gm-price{
+        display:flex!important;
+        flex-direction:column;
+        align-items:flex-end;
+        gap:1px;
+      }
 
-      card.dataset.gmItemKey = row.item_key;
-      card.classList.toggle("gm-card-promo", !!promo);
+      .gm-old{
+        color:#aaa;
+        font-size:10px;
+        text-decoration:line-through;
+      }
 
-      let badge = card.querySelector(":scope > .gm-promo-badge");
-      if (promo && !badge) {
+      .gm-new{
+        color:#fff;
+        font-size:14px;
+        font-weight:900;
+      }
+
+      .gm-promo-card{
+        position:relative;
+      }
+    `;
+
+    document.head.appendChild(s);
+  }
+
+  function updateCard(row) {
+    const card = findCard(row);
+    if (!card) return;
+
+    const price = card.querySelector(".meta b");
+    if (!price) return;
+
+    const promo =
+      row.promo_active &&
+      row.promo_price !== null;
+
+    let badge = card.querySelector(".gm-promo-badge");
+
+    if (promo) {
+      if (!badge) {
         badge = document.createElement("span");
         badge.className = "gm-promo-badge";
         badge.textContent = "Promoção";
         card.appendChild(badge);
-      } else if (!promo && badge) {
-        badge.remove();
       }
 
-      const priceEl = card.querySelector(def.prices);
-      if (priceEl) {
-        if (promo) {
-          priceEl.classList.add("gm-price-wrap");
-          priceEl.innerHTML = `<span class="gm-old-price">${normal}</span><span class="gm-new-price">${promo}</span>`;
-        } else {
-          priceEl.classList.remove("gm-price-wrap");
-          priceEl.textContent = normal;
-        }
-      }
-    });
+      price.className = "gm-price";
 
-    renderPromotions(rows);
+      price.innerHTML = `
+        <span class="gm-old">${money(row.price)}</span>
+        <span class="gm-new">${money(row.promo_price)}</span>
+      `;
+    } else {
+      badge?.remove();
+      price.className = "";
+      price.textContent = money(row.price);
+    }
   }
 
-  function renderPromotions(rows) {
-    let section = document.getElementById("promocoesDestaque");
+  function renderHighlights(rows) {
+    const grid =
+      document.querySelector("#highlights .grid");
+
+    if (!grid) return;
+
+    grid
+      .querySelectorAll(".gm-promo-card")
+      .forEach(el => el.remove());
+
     const active = rows
-      .filter(r => r.promo_active && r.promo_price !== null)
-      .sort((a,b) => new Date(b.promoted_at || 0) - new Date(a.promoted_at || 0));
-
-    if (!active.length) {
-      section?.remove();
-      return;
-    }
-
-    if (!section) {
-      section = document.createElement("section");
-      section.id = "promocoesDestaque";
-      section.className = "gm-promos";
-      const nav = document.getElementById("categoryNav");
-      if (nav?.parentNode) nav.parentNode.insertBefore(section, nav);
-      else document.querySelector(".app-shell, .phone-shell, body")?.appendChild(section);
-    }
-
-    section.replaceChildren();
-
-    const head = document.createElement("div");
-    head.className = "gm-promos-head";
-    const headText = document.createElement("div");
-    headText.innerHTML = `<div class="gm-promos-kicker">Ofertas da casa</div><h2 class="gm-promos-title">Promoções em destaque</h2>`;
-    head.appendChild(headText);
-    section.appendChild(head);
-
-    const grid = document.createElement("div");
-    grid.className = "gm-promos-grid";
+      .filter(
+        r =>
+          r.promo_active &&
+          r.promo_price !== null
+      )
+      .sort(
+        (a, b) =>
+          new Date(b.promoted_at || 0) -
+          new Date(a.promoted_at || 0)
+      );
 
     active.forEach(row => {
-      const source = sourceFor(row);
-      const card = document.createElement("article");
-      card.className = "gm-promo-card";
-      card.dataset.kit = row.category.startsWith("copao") ? "1" : "0";
-      card.dataset.contain = source?.contain ? "1" : "0";
-      card.dataset.gmItemKey = row.item_key;
-      card.tabIndex = 0;
+      const original = findCard(row);
 
-      const media = document.createElement("div");
-      media.className = "gm-promo-media";
-      if (source?.image) {
-        const img = document.createElement("img");
-        img.src = source.image;
-        img.alt = row.name;
-        media.appendChild(img);
+      const article =
+        document.createElement("article");
+
+      article.className =
+        "card gm-promo-card";
+
+      const img =
+        original?.querySelector("img.main-img");
+
+      if (img) {
+        const copy =
+          document.createElement("img");
+
+        copy.className = "main-img";
+        copy.src = img.currentSrc || img.src;
+        copy.alt = row.name;
+
+        article.appendChild(copy);
       }
-      const tag = document.createElement("span");
-      tag.className = "gm-promo-tag";
-      tag.textContent = "PROMOÇÃO";
-      media.appendChild(tag);
 
-      const info = document.createElement("div");
-      info.className = "gm-promo-info";
+      const badge =
+        document.createElement("span");
 
-      const cat = document.createElement("div");
-      cat.className = "gm-promo-category";
-      cat.textContent = categoryLabels[row.category] || "Destaque";
+      badge.className = "gm-promo-badge";
+      badge.textContent = "Promoção";
 
-      const name = document.createElement("div");
-      name.className = "gm-promo-name";
+      const meta =
+        document.createElement("div");
+
+      meta.className = "meta";
+
+      const name =
+        document.createElement("strong");
+
       name.textContent = row.name;
 
-      const prices = document.createElement("div");
-      prices.className = "gm-promo-prices";
-      const oldPrice = document.createElement("s");
-      oldPrice.textContent = money(row.price);
-      const newPrice = document.createElement("strong");
-      newPrice.textContent = money(row.promo_price);
-      prices.append(oldPrice, newPrice);
+      const price =
+        document.createElement("b");
 
-      info.append(cat, name, prices);
-      card.append(media, info);
+      price.className = "gm-price";
 
-      const go = () => {
-        const target = document.getElementById(sectionTargets[row.category]);
-        target?.scrollIntoView({ behavior: "smooth", block: "start" });
-      };
-      card.addEventListener("click", go);
-      card.addEventListener("keydown", e => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          go();
-        }
-      });
+      price.innerHTML = `
+        <span class="gm-old">${money(row.price)}</span>
+        <span class="gm-new">${money(row.promo_price)}</span>
+      `;
 
-      grid.appendChild(card);
+      meta.append(name, price);
+      article.append(badge, meta);
+
+      grid.appendChild(article);
     });
-
-    section.appendChild(grid);
   }
 
-  let refreshing = null;
-  async function refreshManagedMenu() {
-    if (refreshing) return refreshing;
+  function apply(rows) {
+    styles();
 
-    refreshing = (async () => {
-      try {
-        const res = await fetch(`${API_URL}?_=${Date.now()}`, {
-          method: "GET",
-          cache: "no-store",
-          headers: { "Accept": "application/json" }
-        });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    rows.forEach(updateCard);
+    renderHighlights(rows);
 
-        const payload = await res.json();
-        const rows = Array.isArray(payload) ? payload : payload?.items;
-        if (!Array.isArray(rows)) throw new Error("Resposta inválida do gerenciamento");
-
-        applyRows(rows);
-        document.documentElement.dataset.gafforelliMenuSync = "ok";
-      } catch (err) {
-        document.documentElement.dataset.gafforelliMenuSync = "error";
-        console.warn("Gerenciamento do cardápio indisponível; usando preços locais.", err);
-      } finally {
-        refreshing = null;
-      }
-    })();
-
-    return refreshing;
+    document.documentElement.dataset
+      .gafforelliMenuSync = "ok";
   }
 
-  window.gafforelliRefreshMenu = refreshManagedMenu;
+  let loading = false;
 
-  const start = () => setTimeout(refreshManagedMenu, 0);
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start, { once: true });
-  else start();
+  async function refresh() {
+    if (loading) return;
 
-  document.addEventListener("visibilitychange", () => {
-    if (!document.hidden) refreshManagedMenu();
-  });
-  window.addEventListener("pageshow", refreshManagedMenu);
-  window.addEventListener("online", refreshManagedMenu);
-  window.addEventListener("storage", (event) => {
-    if (event.key === UPDATE_KEY) refreshManagedMenu();
-  });
+    loading = true;
 
-  // Mantém promoções/preços sincronizados mesmo se o cliente deixar o cardápio aberto.
-  setInterval(refreshManagedMenu, 15000);
+    try {
+      const response = await fetch(
+        `${API}?t=${Date.now()}`,
+        {
+          cache: "no-store"
+        }
+      );
+
+      if (!response.ok)
+        throw new Error(
+          `HTTP ${response.status}`
+        );
+
+      const data = await response.json();
+
+      const rows =
+        Array.isArray(data)
+          ? data
+          : data.items;
+
+      if (Array.isArray(rows))
+        apply(rows);
+
+    } catch (e) {
+      console.error(
+        "Erro ao carregar promoções:",
+        e
+      );
+    } finally {
+      loading = false;
+    }
+  }
+
+  window.gafforelliRefreshMenu =
+    refresh;
+
+  if (document.readyState === "loading") {
+    document.addEventListener(
+      "DOMContentLoaded",
+      refresh
+    );
+  } else {
+    refresh();
+  }
+
+  document.addEventListener(
+    "visibilitychange",
+    () => {
+      if (!document.hidden)
+        refresh();
+    }
+  );
+
+  setInterval(refresh, 15000);
 })();
