@@ -17,15 +17,28 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.22;ba
 .shell{width:min(100%,560px);margin:0 auto;padding:26px 18px 34px;position:relative;z-index:1}
 .topline{height:3px;width:84px;background:var(--red);border-radius:999px;margin:0 auto 24px;box-shadow:0 0 22px rgba(255,22,22,.55)}
 .brand{text-align:center;padding:8px 0 18px}
-.logo-wrap{width:min(88vw,420px);margin:0 auto;filter:drop-shadow(0 16px 40px rgba(0,0,0,.55))}
-.logo-wrap img{display:block;width:100%;height:auto}
+.logo-wrap{
+  width:min(88vw,420px);
+  margin:0 auto;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:transparent;
+}
+.logo-wrap img{
+  display:block;
+  width:100%;
+  height:auto;
+  object-fit:contain;
+  background:transparent;
+}
 .eyebrow{margin-top:8px;color:#d6d6da;text-transform:uppercase;letter-spacing:.25em;font-size:11px;font-weight:700}
 .title{margin:12px 0 8px;font-size:clamp(26px,6vw,34px);letter-spacing:-.025em}
 .subtitle{margin:0 auto;color:var(--muted);font-size:14px;line-height:1.55;max-width:430px}
 .links{display:grid;gap:12px;margin-top:24px}
 .link{position:relative;display:flex;align-items:center;gap:14px;padding:16px 17px;border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.026));border:1px solid var(--line);color:#fff;text-decoration:none;overflow:hidden;transition:.22s ease;box-shadow:0 12px 32px rgba(0,0,0,.24)}
 .link:before{content:"";position:absolute;inset:-1px auto -1px -45%;width:35%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);transform:skewX(-20deg);transition:.35s ease}
-.link:hover{transform:translateY(-2px);border-color:rgba(255,40,40,.45);box-shadow:0 16px 36px rgba(0,0,0,.36),0 0 0 1px rgba(255,22,22,.05) inset}
+.link:hover{transform:translateY(-2px);border-color:var(--line);box-shadow:0 16px 36px rgba(0,0,0,.36)}
 .link:hover:before{left:120%}
 .icon{width:49px;height:49px;flex:0 0 49px;display:grid;place-items:center;border-radius:15px;background:#0a0a0b;border:1px solid rgba(255,255,255,.09)}
 .icon svg{width:25px;height:25px}
@@ -34,8 +47,8 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.22;ba
 .copy span{display:block;margin-top:3px;color:#97979e;font-size:12px}
 .arrow{font-size:22px;color:#8f8f96;transition:.2s ease}
 .link:hover .arrow{transform:translateX(3px);color:#fff}
-.link.google{border-color:rgba(255,22,22,.28)}
-.link.google .icon{box-shadow:inset 0 0 0 1px rgba(255,22,22,.15)}
+.link.google{border-color:var(--line)}
+.link.google .icon{box-shadow:none}
 .section-label{display:flex;align-items:center;gap:10px;margin:26px 3px 10px;color:#818188;font-size:10px;text-transform:uppercase;letter-spacing:.22em;font-weight:800}
 .section-label:before,.section-label:after{content:"";height:1px;background:rgba(255,255,255,.08);flex:1}
 .footer{text-align:center;margin-top:28px;padding-top:19px;border-top:1px solid rgba(255,255,255,.07)}
