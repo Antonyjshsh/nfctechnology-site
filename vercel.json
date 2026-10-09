@@ -1,17 +1,3 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "redirects": [
-    {
-      "source": "/:path*",
-      "has": [
-        {
-          "type": "query",
-          "key": "utm_source"
-        }
-      ],
-      "destination": "/:path*",
-      "permanent": false,
-      "preserveQueryParams": false
-    }
-  ]
+  "$schema": "https://openapi.vercel.sh/vercel.json"
 }
