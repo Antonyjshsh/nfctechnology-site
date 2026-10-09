@@ -50,7 +50,7 @@
         </div>
         <div class="calculator" id="simulador">
           <div class="calculator-top"><h2>Faça sua simulação</h2><span class="small-tag">ATACADO NFC</span></div>
-          <p class="calc-hint">Arraste o controle, use + e − ou digite a quantidade. Quanto maior o pedido, menor o preço unitário no exemplo.</p>
+          <p class="calc-hint">Arraste os controles para escolher a quantidade e seu próprio preço de revenda. O atacado custa sempre R$ 35 por unidade, a partir de 5 plaquinhas.</p>
           <label for="qty" class="field-label">Quantas plaquinhas você quer comprar?</label>
           <div class="quantity-row">
             <button class="qty-btn" id="minus" type="button" aria-label="Diminuir 5 unidades">−</button>
@@ -60,22 +60,29 @@
           <input class="slider" id="range" type="range" min="5" max="200" step="5" value="10" aria-label="Selecionar quantidade de expositores">
           <div class="ticks"><span>5 unidades</span><span>100</span><span>200+</span></div>
           <span class="quantity-note">Sem limite máximo no pedido: para mais de 200, digite a quantidade no campo acima.</span>
-          <div class="unit-line"><span>Preço no atacado / unidade <br><small id="tier">Faixa: 10 a 24 unidades</small></span><strong id="unit">R$ 44,90</strong></div>
+          <label for="saleRange" class="field-label" style="display:block;margin-top:19px">Por quanto você pretende revender cada plaquinha?</label>
+          <div class="quantity-row">
+            <span class="quantity-note">R$ 80 é nossa sugestão, não uma obrigação.</span>
+            <div class="inputwrap" style="max-width:155px"><span>R$</span><input id="salePrice" type="number" min="1" max="10000" step="1" value="80" inputmode="decimal" aria-label="Seu preço de revenda em reais"></div>
+          </div>
+          <input class="slider" id="saleRange" type="range" min="30" max="200" step="5" value="80" aria-label="Arraste para escolher seu preço de venda">
+          <div class="ticks"><span>R$ 30</span><span>R$ 100</span><span>R$ 200+</span></div>
+          <div class="unit-line"><span>Preço fixo no atacado / unidade <br><small id="tier">A partir de 5 unidades</small></span><strong id="unit">R$ 35,00</strong></div>
           <div class="totals" aria-live="polite">
-            <div class="total-row"><span>Valor dos expositores</span><strong id="investment">R$ 449,00</strong></div>
-            <div class="total-row"><span>Faturamento potencial a R$ 80/un.</span><strong id="revenue">R$ 800,00</strong></div>
+            <div class="total-row"><span>Valor dos expositores</span><strong id="investment">R$ 350,00</strong></div>
+            <div class="total-row"><span id="revenueLabel">Faturamento potencial a R$ 80/un.</span><strong id="revenue">R$ 800,00</strong></div>
           </div>
           <div class="cost-inputs">
-            <div><label for="shipping">Frete ilustrativo (R$)</label><div class="inputwrap"><span>R$</span><input id="shipping" type="number" min="0" step="1" value="30" inputmode="decimal"></div></div>
-            <div><label for="packaging">Caixa e proteção (R$)</label><div class="inputwrap"><span>R$</span><input id="packaging" type="number" min="0" step="1" value="8" inputmode="decimal"></div></div>
+            <div><label for="shipping">Frete estimado (opcional)</label><div class="inputwrap"><span>R$</span><input id="shipping" type="number" min="0" step="1" placeholder="A cotar" inputmode="decimal"></div></div>
+            <div><label for="packaging">Caixa e proteção (opcional)</label><div class="inputwrap"><span>R$</span><input id="packaging" type="number" min="0" step="1" placeholder="A informar" inputmode="decimal"></div></div>
           </div>
-          <div class="fine">Os R$ 30 de frete e R$ 8 de embalagem são <strong>exemplos ajustáveis</strong>, não preço fixo nem frete máximo. Os valores reais dependem do CEP, peso, volume e material utilizado. <strong>O revendedor paga os dois.</strong></div>
+          <div class="fine">O frete real será cotado a partir do CEP, peso e volume. O custo da caixa e proteção será informado no orçamento. <strong>O revendedor paga frete e embalagem.</strong> Use os campos acima somente se quiser simular os custos.</div>
           <div class="divider" style="margin-top:20px"></div>
-          <div class="total-row" style="margin-top:13px"><span>Investimento estimado total</span><strong id="allcost">R$ 487,00</strong></div>
+          <div class="total-row" style="margin-top:13px"><span id="totalLabel">Investimento nos produtos (envio a cotar)</span><strong id="allcost">R$ 350,00</strong></div>
           <div class="profit">
-            <div class="profit-label">Seu ganho bruto potencial após vender tudo</div>
-            <div class="profit-value" id="profit">R$ 313,00</div>
-            <div class="profit-sub" id="profitdetail">Venda de 10 unidades no preço sugerido, descontando compra, frete e caixa simulados.</div>
+            <div class="profit-label" id="profitLabel">Seu ganho bruto potencial antes do frete e da caixa</div>
+            <div class="profit-value" id="profit">R$ 450,00</div>
+            <div class="profit-sub" id="profitdetail">Considera vender as 10 unidades por R$ 80 cada, antes de frete, caixa, tributos e outras despesas.</div>
           </div>
           <div class="cep-area">
             <label for="cep" class="field-label">Seu CEP para consultar o envio</label>
@@ -122,35 +129,37 @@
       </div>
     </section>
   </main>
-  <footer><div class="wrap footer-inner"><span>© NFC Technology — Expositores com tecnologia NFC</span><span><a href="/">Conheça nosso site</a> · <a href="https://wa.me/5551980539863" target="_blank" rel="noopener noreferrer">Fale com a NFC Technology</a></span></div><div class="wrap" style="padding-top:19px"><p class="small-print">Preços de atacado desta calculadora são uma proposta de simulação e serão confirmados no orçamento. Preço de R$ 80 é sugestão, não obrigação. Os resultados dependem da venda efetiva pelo revendedor; não há garantia de vendas ou lucro. A simulação não contempla tributos, taxas de recebimento e demais despesas do revendedor.</p></div></footer>
+  <footer><div class="wrap footer-inner"><span>© NFC Technology — Expositores com tecnologia NFC</span><span><a href="/">Conheça nosso site</a> · <a href="https://wa.me/5551980539863" target="_blank" rel="noopener noreferrer">Fale com a NFC Technology</a></span></div><div class="wrap" style="padding-top:19px"><p class="small-print">Preço de atacado: R$ 35 por unidade para pedidos a partir de 5. R$ 80 é apenas uma sugestão de revenda; o revendedor decide quanto cobrar. Os resultados dependem da venda efetiva pelo revendedor; não há garantia de vendas ou lucro. A simulação não contempla tributos, taxas de recebimento e demais despesas do revendedor.</p></div></footer>
   <script>
     (function(){
       "use strict";
       const el=id=>document.getElementById(id);
-      const qtyInput=el("qty"), slider=el("range"), minus=el("minus"), plus=el("plus"), ship=el("shipping"), pack=el("packaging"), cep=el("cep"), order=el("order");
+      const qtyInput=el("qty"), slider=el("range"), minus=el("minus"), plus=el("plus"), ship=el("shipping"), pack=el("packaging"), cep=el("cep"), order=el("order"), saleRange=el("saleRange"), salePrice=el("salePrice");
+      const ATACADO=35;
       const brl=n=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(n);
       const cost=x=>Math.max(0,Number(x)||0);
       let count=10;
-      function tier(n){
-        if(n>=100)return {price:29.90,label:"100 unidades ou mais"};
-        if(n>=50)return {price:34.90,label:"50 a 99 unidades"};
-        if(n>=25)return {price:39.90,label:"25 a 49 unidades"};
-        if(n>=10)return {price:44.90,label:"10 a 24 unidades"};
-        return {price:49.90,label:"5 a 9 unidades"};
-      }
+      function price(){const v=Number(salePrice.value);return Number.isFinite(v)?Math.max(1,Math.min(10000,v)):80}
       function update(){
-        const t=tier(count), products=count*t.price, revenue=count*80, freight=cost(ship.value), box=cost(pack.value), total=products+freight+box, gross=revenue-total;
+        const selling=price(),products=count*ATACADO,revenue=count*selling;
+        const hasShip=ship.value.trim()!=="",hasPack=pack.value.trim()!=="";
+        const freight=cost(ship.value),box=cost(pack.value),quoted=hasShip&&hasPack;
+        const estimatedExtras=quoted?freight+box:0,total=products+estimatedExtras,gross=revenue-total;
         qtyInput.value=String(count);slider.max=String(Math.max(200,Math.ceil(count/5)*5));slider.value=String(Math.min(count,Number(slider.max)));
+        saleRange.value=String(Math.max(Number(saleRange.min),Math.min(Number(saleRange.max),selling)));
         minus.disabled=count<=5;
-        el("tier").textContent="Faixa: "+t.label;
-        el("unit").textContent=brl(t.price);
+        el("tier").textContent="A partir de 5 unidades";
+        el("unit").textContent=brl(ATACADO);
         el("investment").textContent=brl(products);
+        el("revenueLabel").textContent="Faturamento potencial a "+brl(selling)+"/un.";
         el("revenue").textContent=brl(revenue);
+        el("totalLabel").textContent=quoted?"Investimento com frete e caixa estimados":"Investimento nos produtos (envio a cotar)";
         el("allcost").textContent=brl(total);
+        el("profitLabel").textContent=quoted?"Ganho bruto potencial após frete e caixa estimados":"Ganho bruto potencial antes do frete e da caixa";
         el("profit").textContent=brl(gross);
-        el("profitdetail").textContent="Considera a revenda das "+count+" unidades a R$ 80 cada, com frete e caixa ilustrativos. Outros custos não incluídos.";
+        el("profitdetail").textContent=quoted?"Considera vender todas as "+count+" unidades a "+brl(selling)+" cada, abatendo frete e caixa estimados. Outros custos não incluídos.":"Considera vender todas as "+count+" unidades a "+brl(selling)+" cada, antes de frete, caixa, tributos e demais despesas.";
         const zip=cep.value.replace(/\D/g,"");
-        const msg=["Olá! Quero solicitar um orçamento de revendedor NFC Technology.","Quantidade: "+count+" expositores.","Preço de atacado simulado: "+brl(t.price)+" por unidade.","Total dos expositores: "+brl(products)+".","CEP para cotação: "+(zip.length===8?zip.slice(0,5)+"-"+zip.slice(5):"a informar")+".","Frete e embalagem: calcular valores reais antes do pagamento.","Ganhos exibidos no site são apenas uma simulação. Quero confirmar modelos disponíveis, preços e envio."].join("\n");
+        const msg=["Olá! Quero solicitar um orçamento de revendedor NFC Technology.","Quantidade: "+count+" expositores.","Preço de atacado: "+brl(ATACADO)+" por unidade.","Total dos expositores: "+brl(products)+".","Meu preço simulado de revenda: "+brl(selling)+" por unidade.","Ganho bruto potencial antes de despesas adicionais: "+brl(revenue-products)+".","CEP para cotação: "+(zip.length===8?zip.slice(0,5)+"-"+zip.slice(5):"a informar")+".","Frete e embalagem: calcular valores reais antes do pagamento.","Quero confirmar os modelos disponíveis, preços e envio."].join("\n");
         order.href="https://wa.me/5551980539863?text="+encodeURIComponent(msg);
       }
       function setCount(n){if(!Number.isFinite(n))return;count=Math.max(5,Math.floor(n));update()}
@@ -159,6 +168,9 @@
       minus.addEventListener("click",()=>setCount(count-5));
       qtyInput.addEventListener("input",()=>{if(qtyInput.value!==""&&Number(qtyInput.value)>=5)setCount(Number(qtyInput.value))});
       qtyInput.addEventListener("change",()=>setCount(Number(qtyInput.value)||5));
+      saleRange.addEventListener("input",()=>{salePrice.value=saleRange.value;update()});
+      salePrice.addEventListener("input",update);
+      salePrice.addEventListener("change",()=>{salePrice.value=price();update()});
       [ship,pack].forEach(node=>node.addEventListener("input",update));
       cep.addEventListener("input",()=>{const digits=cep.value.replace(/\D/g,"").slice(0,8);cep.value=digits.length>5?digits.slice(0,5)+"-"+digits.slice(5):digits;update()});
       update();
