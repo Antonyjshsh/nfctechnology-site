@@ -56,7 +56,18 @@
     .amount.investment{color:#f8fbff}
     .amount.negative{color:#ff9c9c}
     .result-hint{font-size:12px;color:var(--muted);margin:0;line-height:1.6}
-    .cta-section{text-align:center;margin:26px auto 60px}
+    .model-section{margin:32px auto 0}
+    .model-section h2{font-size:24px;letter-spacing:-.04em;margin:0 0 7px;text-align:center}
+    .model-sub{font-size:13px;color:var(--muted);line-height:1.6;margin:0 0 22px;text-align:center}
+    .model-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+    .model-card{display:block;min-width:0;overflow:hidden;border-radius:16px;border:1px solid var(--stroke);background:var(--surface);transition:border-color .2s,transform .2s}
+    .model-card:hover{border-color:#5fa5dc;transform:translateY(-2px)}
+    .model-card:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+    .model-card img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;background:#111922}
+    .model-card strong{display:block;font-size:14px;padding:12px 14px;line-height:1.3}
+    .model-card:last-child{grid-column:1/-1}
+    .model-card:last-child img{max-height:370px;object-position:center}
+    .cta-section{text-align:center;margin:28px auto 60px}
     .cta-section h2{font-size:20px;letter-spacing:-.035em;margin:0 0 6px}
     .cta-section .sub{font-size:13px;color:var(--muted);margin:0 0 22px;line-height:1.5}
     .form{max-width:410px;margin:auto}
@@ -78,6 +89,9 @@
       .heading label{font-size:14px}.value{font-size:22px}
       .result-name{font-size:11px}.amount{font-size:clamp(20px,5.5vw,30px)}
       .result-item{padding:0 5px}
+      .model-grid{gap:10px}.model-card{border-radius:12px}
+      .model-card strong{font-size:12px;padding:10px 9px}
+      .model-card:last-child img{max-height:250px}
       .field+.field{margin-top:31px}.cta-section{margin-bottom:46px}
       header{padding:14px 0}.back{padding:8px 11px}
       .logo-frame{width:95px;height:56px}.logo{width:106px;height:106px;left:-5px;top:-24px}
@@ -118,6 +132,17 @@
           </div>
         </div>
         <p id="resultHint" class="result-hint">Se vender as 20 plaquinhas por R$ 80,00 cada.</p>
+      </div>
+    </section>
+    <section class="model-section" id="modelos" aria-label="Expositores NFC disponíveis para revenda">
+      <h2>Modelos disponíveis</h2>
+      <p class="model-sub">Todos com aproximação NFC, nas versões branca e preta. Você pode combinar modelos no mesmo pedido.</p>
+      <div class="model-grid">
+        <a class="model-card" href="/revendedores/imagens/google.webp" target="_blank" rel="noopener"><img src="/revendedores/imagens/google.webp" alt="Expositores Google Avaliação NFC nas versões branca e preta" loading="lazy"><strong>Google Avaliações</strong></a>
+        <a class="model-card" href="/revendedores/imagens/instagram.webp" target="_blank" rel="noopener"><img src="/revendedores/imagens/instagram.webp" alt="Expositores Instagram NFC nas versões branca e preta" loading="lazy"><strong>Instagram</strong></a>
+        <a class="model-card" href="/revendedores/imagens/wifi.webp" target="_blank" rel="noopener"><img src="/revendedores/imagens/wifi.webp" alt="Expositores Wi-Fi NFC nas versões branca e preta" loading="lazy"><strong>Wi‑Fi</strong></a>
+        <a class="model-card" href="/revendedores/imagens/facebook.webp" target="_blank" rel="noopener"><img src="/revendedores/imagens/facebook.webp" alt="Expositores Facebook NFC nas versões branca e preta" loading="lazy"><strong>Facebook</strong></a>
+        <a class="model-card" href="/revendedores/imagens/whatsapp.webp" target="_blank" rel="noopener"><img src="/revendedores/imagens/whatsapp.webp" alt="Expositores WhatsApp NFC nas versões branca e preta" loading="lazy"><strong>WhatsApp</strong></a>
       </div>
     </section>
     <section class="cta-section" aria-label="Solicitar pedido de revendedor">
