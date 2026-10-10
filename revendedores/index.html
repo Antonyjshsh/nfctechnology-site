@@ -47,9 +47,13 @@
     input[type=range]:focus-visible{outline:2px solid #bce7ff;outline-offset:8px}
     .ends{display:flex;justify-content:space-between;color:#8095aa;font-size:11px;margin-top:13px}
     .result{border-top:1px solid var(--stroke);margin-top:33px;padding-top:26px;text-align:center}
-    .result-name{font-size:13px;color:#bfcddd;font-weight:650}
-    .amount{font-size:clamp(48px,8vw,70px);line-height:1.14;letter-spacing:-.07em;font-weight:900;
-      font-variant-numeric:tabular-nums;color:var(--green);margin:10px 0}
+    .result-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:center;margin-bottom:18px}
+    .result-item{min-width:0;padding:0 8px}
+    .result-item + .result-item{border-left:1px solid var(--stroke)}
+    .result-name{font-size:12px;color:#bfcddd;font-weight:650;line-height:1.4}
+    .amount{font-size:clamp(24px,4.5vw,42px);line-height:1.2;letter-spacing:-.055em;font-weight:900;
+      font-variant-numeric:tabular-nums;color:var(--green);margin:9px 0 0;white-space:nowrap}
+    .amount.investment{color:#f8fbff}
     .amount.negative{color:#ff9c9c}
     .result-hint{font-size:12px;color:var(--muted);margin:0;line-height:1.6}
     .cta-section{text-align:center;margin:26px auto 60px}
@@ -72,6 +76,8 @@
     @media(max-width:580px){
       .intro{padding-top:33px}.simulator{padding:24px 21px;border-radius:19px}
       .heading label{font-size:14px}.value{font-size:22px}
+      .result-name{font-size:11px}.amount{font-size:clamp(20px,5.5vw,30px)}
+      .result-item{padding:0 5px}
       .field+.field{margin-top:31px}.cta-section{margin-bottom:46px}
       header{padding:20px 0}.back{padding:8px 11px}.brand{font-size:12px}
     }
@@ -100,8 +106,16 @@
         <div class="ends"><span>R$ 20</span><span>R$ 200</span></div>
       </div>
       <div class="result" aria-live="polite" aria-atomic="true">
-        <div id="resultTitle" class="result-name">Seu lucro bruto potencial</div>
-        <div id="grossProfit" class="amount">R$ 900,00</div>
+        <div class="result-grid">
+          <div class="result-item">
+            <div class="result-name">Seu investimento</div>
+            <div id="investment" class="amount investment">R$ 700,00</div>
+          </div>
+          <div class="result-item">
+            <div id="resultTitle" class="result-name">Seu lucro bruto potencial</div>
+            <div id="grossProfit" class="amount">R$ 900,00</div>
+          </div>
+        </div>
         <p id="resultHint" class="result-hint">Se vender as 20 plaquinhas por R$ 80,00 cada.</p>
       </div>
     </section>
@@ -126,6 +140,7 @@
       const sellingPrice = document.getElementById('sellingPrice');
       const quantityValue = document.getElementById('quantityValue');
       const sellingValue = document.getElementById('sellingValue');
+      const investment = document.getElementById('investment');
       const grossProfit = document.getElementById('grossProfit');
       const resultTitle = document.getElementById('resultTitle');
       const resultHint = document.getElementById('resultHint');
@@ -138,6 +153,7 @@
         const gross = q * (sell - 35);
         quantityValue.textContent = String(q);
         sellingValue.textContent = money(sell);
+        investment.textContent = money(q * 35);
         grossProfit.textContent = money(gross);
         grossProfit.classList.toggle('negative', gross < 0);
         resultTitle.textContent = gross < 0 ? 'Resultado bruto negativo' : 'Seu lucro bruto potencial';
