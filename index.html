@@ -51,7 +51,7 @@
     @media(max-width:650px){.nav-actions .nav-cta{display:none}.nav-partner{font-size:.79rem;padding:10px 11px}.nav-logo{height:38px}.partner-copy h2{font-size:clamp(2.25rem,10vw,3.5rem)}}
   
     /* Galeria fixa: sem rolagem horizontal no desktop ou no celular. */
-    .client-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;overflow:visible;scroll-snap-type:none;margin-top:34px;padding-bottom:0}
+    .client-row{display:grid;grid-auto-flow:row;grid-auto-columns:auto;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;overflow:visible;scroll-snap-type:none;margin-top:34px;padding-bottom:0}
     .client-card{scroll-snap-align:none;min-height:360px;outline-offset:4px}
     .client-card--wide{grid-column:1/-1;min-height:450px}
     .client-card img{object-fit:contain;background:#101825}
